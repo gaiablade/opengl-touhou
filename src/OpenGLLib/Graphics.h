@@ -34,6 +34,7 @@
  * Rendering Objects:
  */
 #include "Graphics/Shader.h"
+#include "Graphics/ShaderManager.h"
 #include "Graphics/Sprite.h"
 #include "Graphics/Texture.h"
 

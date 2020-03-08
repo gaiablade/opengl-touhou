@@ -13,7 +13,7 @@ class Player {
         ga::Sprite sprite;
         ga::Shader* shader;
     public:
-        Player();
+        Player(ga::Shader* shader = nullptr);
         ~Player();
         void update(float dt);
         void draw(ga::Renderer* renderer);

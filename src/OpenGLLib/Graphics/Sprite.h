@@ -9,6 +9,7 @@
 #include "BufferLayoutData.h"
 #include "Texture.h"
 #include "Shader.h"
+#include "ShaderManager.h"
 #include "GLCall.h"
 
 #include "stb_image/stb_image.h"
@@ -22,6 +23,10 @@ namespace ga {
         float x, y;
     };
 
+    struct Color {
+        float r, g, b, a;
+    };
+
     class Sprite {
         public:
             Sprite();
@@ -29,7 +34,9 @@ namespace ga {
             Sprite(ga::Texture* texture);
             ~Sprite();
             void initializeTexture();
+            void initializeColor();
             void Bind() const;
+            void setColor(const float r, const float g, const float b);
             inline ga::Texture* getTexture() const { return this->texture; }
             inline uint32_t getWidth() const { return this->width; }
             inline uint32_t getHeight() const { return this->height; }
@@ -42,6 +49,7 @@ namespace ga {
         private:
             uint32_t width, height;
             ga::Position2D position;
+            ga::Color color;
 
             // OpenGL:
             ga::Texture* texture;

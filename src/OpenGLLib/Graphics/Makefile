@@ -3,7 +3,7 @@ LIB = -lglfw -lGLEW -lGL
 FLAGS = -Wall
 DIRS = -I./../ -I./../vendor/
 IMGUI = imgui_impl_opengl3.o imgui_impl_glfw.o imgui.o imgui_demo.o imgui_draw.o imgui_widgets.o
-API = VertexBuffer.o VertexArray.o BufferLayoutData.o IndexBuffer.o Shader.o Texture.o Renderer.o Sprite.o
+API = VertexBuffer.o VertexArray.o BufferLayoutData.o IndexBuffer.o Shader.o Texture.o Renderer.o Sprite.o ShaderManager.o
 MODELS = Model.o ModelLoader.o Mesh.o Material.o
 CAMERAS = PerspectiveCamera.o
 OBJS = GLCall.o stb_image.o $(API) $(IMGUI) $(MODELS) $(CAMERAS)
@@ -50,6 +50,9 @@ Material.o: Material.cpp Material.h
 	$(COMP) $< -c $(DIRS) $(FLAGS)
 
 ModelLoader.o: ModelLoader.cpp ModelLoader.h Material.o Mesh.o Model.o
+	$(COMP) $< -c $(DIRS) $(FLAGS)
+
+ShaderManager.o: ShaderManager.cpp ShaderManager.h Shader.o
 	$(COMP) $< -c $(DIRS) $(FLAGS)
 
 stb_image.o: ../vendor/stb_image/stb_image.cpp ../vendor/stb_image/stb_image.h

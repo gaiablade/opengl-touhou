@@ -5,22 +5,25 @@ bool Player::right = false;
 bool Player::up = false;
 bool Player::down = false;
 
-Player::Player() {
+Player::Player(ga::Shader* shader) {
     this->texture = new ga::Texture("res/textures/ship_34x37.png");
-    this->shader = new ga::Shader("res/shaders/spriteShader.glsl");
+    if (!shader) this->shader = new ga::Shader("res/shaders/spriteShader.glsl");
+    else this->shader = shader;
     this->sprite = ga::Sprite(this->texture);
     this->sprite.setShader(this->shader);
     this->inputHandler.callback = this->dcCallback;
+    this->position.x = 0;
+    this->position.y = 0;
 }
 
 Player::~Player() {
 }
 
 void Player::update(float dt) {
-    this->position.x -= (int)Player::left * dt * PLAYER_SPEED;
-    this->position.x += (int)Player::right * dt * PLAYER_SPEED;
-    this->position.y -= (int)Player::down * dt * PLAYER_SPEED;
-    this->position.y += (int)Player::up * dt * PLAYER_SPEED;
+    this->position.x -= Player::left  ? 1 : 0 * dt * PLAYER_SPEED;
+    this->position.x += Player::right ? 1 : 0 * dt * PLAYER_SPEED;
+    this->position.y -= Player::down  ? 1 : 0 * dt * PLAYER_SPEED;
+    this->position.y += Player::up    ? 1 : 0 * dt * PLAYER_SPEED;
     this->sprite.setPosition(this->position.x, this->position.y);
 }
 
