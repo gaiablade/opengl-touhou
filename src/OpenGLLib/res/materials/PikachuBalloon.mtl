@@ -1,0 +1,32 @@
+newmtl h_kage_lm1
+Ka 0.972549 0.972549 0.972549
+Kd 0.7843137 0.7843137 0.7843137
+d 1
+Tr 1
+map_Ka h_kage_lm1.png
+map_Kd h_kage_lm1.png
+map_d h_kage_lm1.png
+newmtl h_test_lm1
+Ka 0.972549 0.972549 0.972549
+Kd 0.7843137 0.7843137 0.7843137
+d 1
+Tr 1
+map_Ka h_test_lm1.png
+map_Kd h_test_lm1.png
+map_d h_test_lm1.png
+newmtl lambert3
+Ka 0.972549 0.972549 0.972549
+Kd 0.7843137 0.7843137 0.7843137
+d 1
+Tr 1
+map_Ka lambert3.png
+map_Kd lambert3.png
+map_d lambert3.png
+newmtl lambert4
+Ka 0.972549 0.972549 0.972549
+Kd 0.7843137 0.7843137 0.7843137
+d 1
+Tr 1
+map_Ka lambert4.png
+map_Kd lambert4.png
+map_d lambert4.png
