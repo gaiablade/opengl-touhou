@@ -6,8 +6,11 @@
 #include <chrono>
 
 #include "Player.h"
+#include "Enemy.h"
 #include "Laser.h"
 #include "OpenGLLib/Graphics.h"
+
+class Player;
 
 class GameManager {
     private:
@@ -15,7 +18,7 @@ class GameManager {
         float width, height;
         GLFWwindow* window;
         Player player;
-        Laser laser;
+        Enemy enemy;
         ga::Renderer renderer;
         float elapsedTime;
         std::chrono::time_point<std::chrono::high_resolution_clock> lastTime;

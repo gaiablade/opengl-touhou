@@ -23,6 +23,10 @@ namespace ga {
         float x, y;
     };
 
+    struct Size2D {
+        float width, height;
+    };
+
     struct Color {
         float r, g, b, a;
     };

@@ -4,16 +4,22 @@ LIB = -lglfw -lGLEW -lGL
 FLAGS = -Wall
 DIRS = -I./OpenGLLib/ -IOpenGLLib/vendor/ -LOpenGLLib/ -LOpenGLLib/vendor/ -IOpenGLLib/Graphics
 
-$(EXEC): source.cpp Player.o Laser.o GameManager.o OpenGLLib/OpenGL.a
+$(EXEC): source.cpp Player.o Enemy.o Laser.o GameManager.o Entity.o OpenGLLib/OpenGL.a
 	$(COMP) $^ -o $(EXEC) $(LIB) $(FLAGS) $(DIRS)
 
-Player.o: Player.cpp Player.h
+Player.o: Player.cpp Player.h Entity.o
 	$(COMP) $< -c $(FLAGS) $(DIRS)
 
-Laser.o: Laser.cpp Laser.h
+Enemy.o: Enemy.cpp Enemy.h Entity.o
 	$(COMP) $< -c $(FLAGS) $(DIRS)
 
-GameManager.o: GameManager.cpp GameManager.h Player.o
+Entity.o: Entity.cpp Entity.h
+	$(COMP) $< -c $(FLAGS) $(DIRS)
+
+Laser.o: Laser.cpp Laser.h Player.o
+	$(COMP) $< -c $(FLAGS) $(DIRS)
+
+GameManager.o: GameManager.cpp GameManager.h Player.o Enemy.o
 	$(COMP) $< -c $(FLAGS) $(DIRS)
 
 # Remove .o Files

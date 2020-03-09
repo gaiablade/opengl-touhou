@@ -1,23 +1,27 @@
 #pragma once
 #include <iostream>
+#include <list>
 #include "OpenGLLib/Graphics.h"
 #include "OpenGLLib/Input.h"
 
-const int PLAYER_SPEED = 100;
+#include "Entity.h"
+#include "Laser.h"
 
-class Player {
+class Laser;
+
+const int PLAYER_SPEED = 200;
+const float LASER_DELAY = 0.2f;
+
+class Player : public Entity {
     private:
-        ga::Position2D position;
-        ga::Velocity2D velocity;
-        ga::Texture* texture;
-        ga::Sprite sprite;
-        ga::Shader* shader;
+        float lastLaser;
+        std::list<Laser> lasers;
     public:
         Player(ga::Shader* shader = nullptr);
         ~Player();
         void update(float dt);
         void draw(ga::Renderer* renderer);
         static void dcCallback(uint32_t keyCode);
-        static bool left, right, down, up;
+        static bool left, right, down, up, z;
         ga::DirectionalComponent inputHandler;
 };

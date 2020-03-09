@@ -3,7 +3,7 @@
 GameManager::GameManager(GLFWwindow* window, float width, float height)
     : window(window), dt(0), width(width), height(height), renderer(width, height),
     shaderManager("shaderList.txt"), player(this->shaderManager.shaders["res/shaders/spriteShader.glsl"]),
-    laser(5, 20, this->shaderManager.shaders["res/shaders/colorShader.glsl"])
+    enemy(this->shaderManager.shaders["res/shaders/spriteShader.glsl"])
 {
     this->lastTime = std::chrono::high_resolution_clock::now();
 }
@@ -16,10 +16,10 @@ void GameManager::start() {
         this->updateDt();
         this->updateInput();
         this->player.update(this->dt);
-        this->laser.update(this->dt);
+        this->enemy.update(this->dt);
         this->renderer.Clear();
         this->player.draw(&this->renderer);
-        this->laser.draw(&this->renderer);
+        this->enemy.draw(&this->renderer);
         glfwSwapBuffers(window);
         glfwPollEvents();
         dt = 0.0f;
@@ -50,6 +50,12 @@ void GameManager::updateInput() const {
     }
     else {
         this->player.inputHandler.callback(8u);
+    }
+    if (glfwGetKey(this->window, GLFW_KEY_Z) == GLFW_PRESS) {
+        this->player.inputHandler.callback(9u);
+    }
+    else {
+        this->player.inputHandler.callback(10u);
     }
 }
 
