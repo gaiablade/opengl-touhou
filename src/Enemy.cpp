@@ -3,8 +3,9 @@
 Enemy::Enemy(ga::Shader* shader)
     : Entity("res/textures/enemy_22x23.png", shader)
 {
-    this->position.x = 100;
+    this->position.x = rand() % 800;
     this->position.y = 600;
+    this->sprite.setPosition(this->position.x, this->position.y);
 }
 
 Enemy::~Enemy() {

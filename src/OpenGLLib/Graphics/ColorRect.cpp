@@ -1,16 +1,15 @@
-#include "Sprite.h"
+#include "ColorRect.h"
 
 namespace ga {
-    Sprite::Sprite()
-        : texture(nullptr)
+    ColorRect::ColorRect()
     {
     }
 
-    Sprite::Sprite(Texture* texture)
-        : texture(texture)
+    ColorRect::ColorRect(ga::Color& color, const float& width, const float& height)
+        : color(color)
     {
-        this->size.width = this->texture->getWidth();
-        this->size.height = this->texture->getHeight();
+        this->size.width = width;
+        this->size.height = height;
         this->data = {
             0.0f,                    0.0f,                     0.0f, 0.0f,
             (float)this->size.width, 0.0f,                     1.0f, 0.0f,
@@ -30,18 +29,17 @@ namespace ga {
         va->AddBuffer(*this->vb, *this->bld);
     }
 
-    Sprite::~Sprite() {
+    ColorRect::~ColorRect() {
     }
 
-    void Sprite::Bind() const {
+    void ColorRect::Bind() const {
         this->shader->Bind();
-        this->texture->Bind();
         this->va->Bind();
         this->ib->Bind();
 
         // Calculate Model Matrix:
         glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(this->position.x, this->position.y, 0.0f));
         this->shader->SetUniformMat4f("Model", model);
-        this->shader->SetUniform1i("u_Texture", 0);
+        this->shader->SetUniform4f("u_Color", this->color.r, this->color.g, this->color.b, this->color.a);
     }
 };

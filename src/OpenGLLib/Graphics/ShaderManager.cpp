@@ -1,5 +1,8 @@
 #include "ShaderManager.h"
 
+ga::Shader* ShaderManager::genericColorShader = nullptr;
+ga::Shader* ShaderManager::genericSpriteShader = nullptr;
+
 namespace ga {
     ShaderManager::ShaderManager(const std::string& shaderList) {
         std::string filename;

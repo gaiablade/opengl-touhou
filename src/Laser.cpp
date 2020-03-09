@@ -3,7 +3,7 @@
 ga::Shader* Laser::laserShader = nullptr;
 
 Laser::Laser(const int& width, const int& height, const float& x, const float& y, ga::Shader* shader)
-    : sprite(width, height)
+    : sprite(ga::Color{0.0f, 1.0f, 0.0f, 1.0f}, width, height)
 {
     if (!Laser::laserShader) {
         Laser::laserShader = new Shader("res/shaders/colorShader.glsl");

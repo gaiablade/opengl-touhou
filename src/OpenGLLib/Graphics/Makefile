@@ -3,10 +3,11 @@ LIB = -lglfw -lGLEW -lGL
 FLAGS = -Wall
 DIRS = -I./../ -I./../vendor/
 IMGUI = imgui_impl_opengl3.o imgui_impl_glfw.o imgui.o imgui_demo.o imgui_draw.o imgui_widgets.o
-API = VertexBuffer.o VertexArray.o BufferLayoutData.o IndexBuffer.o Shader.o Texture.o Renderer.o Sprite.o ShaderManager.o
+API = VertexBuffer.o VertexArray.o BufferLayoutData.o IndexBuffer.o Shader.o Texture.o Renderer.o ShaderManager.o
+RECT = Rect.o Sprite.o ColorRect.o Rect2D.o
 MODELS = Model.o ModelLoader.o Mesh.o Material.o
 CAMERAS = PerspectiveCamera.o
-OBJS = GLCall.o stb_image.o $(API) $(IMGUI) $(MODELS) $(CAMERAS)
+OBJS = GLCall.o stb_image.o $(API) $(IMGUI) $(MODELS) $(CAMERAS) $(RECT)
 
 all: $(OBJS)
 
@@ -34,7 +35,16 @@ Texture.o: Texture.cpp Texture.h GLCall.o
 Renderer.o: Renderer.cpp Renderer.h VertexArray.o Shader.o IndexBuffer.o Sprite.o GLCall.o
 	$(COMP) $< -c $(DIRS) $(FLAGS)
 
+Rect2D.o: Rect2D.cpp Rect2D.h Sprite.o ColorRect.o Rect.o
+	$(COMP) $< -c $(DIRS) $(FLAGS)
+
 Sprite.o: Sprite.cpp Sprite.h GLCall.o VertexBuffer.o IndexBuffer.o VertexArray.o BufferLayoutData.o Texture.o
+	$(COMP) $< -c $(DIRS) $(FLAGS)
+
+ColorRect.o: ColorRect.cpp ColorRect.h Rect.o
+	$(COMP) $< -c $(DIRS) $(FLAGS)
+
+Rect.o: Rect.cpp Rect.h
 	$(COMP) $< -c $(DIRS) $(FLAGS)
 
 PerspectiveCamera.o: PerspectiveCamera.cpp PerspectiveCamera.h GLCall.o

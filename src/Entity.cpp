@@ -1,13 +1,9 @@
 #include "Entity.h"
 
 Entity::Entity(const std::string& textureFile, ga::Shader* shader)
+    : texture(new ga::Texture(textureFile)), sprite(this->texture)
 {
-    this->texture = new ga::Texture(textureFile);
     this->size = { this->texture->getWidth(), this->texture->getHeight() };
-    if (!shader) this->shader = new ga::Shader("res/shaders/spriteShader.glsl");
-    else this->shader = shader;
-    this->sprite = ga::Sprite(this->texture);
-    this->sprite.setShader(this->shader);
     this->position.x = 0;
     this->position.y = 0;
 }

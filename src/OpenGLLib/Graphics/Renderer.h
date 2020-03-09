@@ -5,7 +5,7 @@
 #include "IndexBuffer.h"
 #include "Shader.h"
 #include "Model.h"
-#include "Sprite.h"
+#include "Rect2D.h"
 #include "GLCall.h"
 
 namespace ga {
@@ -16,7 +16,9 @@ namespace ga {
             Renderer(float screenWidth, float screenHeight) : width(screenWidth), height(screenHeight) {}
             void Draw(const ga::VertexArray& va, const ga::IndexBuffer& ib, const ga::Shader& shader) const;
             void Draw(ga::Model& model, Shader& shader);
+            void Draw(ga::Rect2D& rect2d);
             void Draw(ga::Sprite& sprite);
+            void Draw(ga::ColorRect& sprite);
             void Clear() const;
     };
 };

@@ -18,11 +18,20 @@ namespace ga {
         }
     }
 
-    void Renderer::Draw(Sprite& sprite) {
+    void Renderer::Draw(ga::Rect2D& rect2d) {
+        rect2d.rect->Bind();
+        rect2d.getShader()->SetUniformMat4f("Projection", glm::ortho(0.0f, this->width, 0.0f, this->height, -1.0f, 1.0f));
+        GLCall(glDrawElements(GL_TRIANGLES, rect2d.rect->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, 0));
+    }
+
+    void Renderer::Draw(ga::Sprite& sprite) {
         sprite.Bind();
         sprite.getShader()->SetUniformMat4f("Projection", glm::ortho(0.0f, this->width, 0.0f, this->height, -1.0f, 1.0f));
         sprite.getShader()->SetUniform1i("u_Texture", 0);
         GLCall(glDrawElements(GL_TRIANGLES, sprite.getIndexBuffer()->getCount(), GL_UNSIGNED_INT, 0));
+    }
+
+    void Renderer::Draw(ga::ColorRect& sprite) {
     }
 
     void Renderer::Clear() const {

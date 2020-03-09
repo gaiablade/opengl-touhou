@@ -17,6 +17,6 @@ class Laser {
     private:
         ga::Position2D position;
         ga::Velocity2D velocity;
-        ga::Sprite sprite;
+        ga::Rect2D sprite;
         ga::Shader* shader;
 };

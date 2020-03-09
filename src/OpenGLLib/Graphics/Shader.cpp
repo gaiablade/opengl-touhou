@@ -1,7 +1,7 @@
 #include "Shader.h"
 
 namespace ga {
-    Shader::Shader(const std::string& filename) 
+    Shader::Shader(const std::string& filename)
         : ID(0)
     {
         ShaderData source = ReadShader(filename); // Read vertex and fragment shaders
@@ -59,6 +59,9 @@ namespace ga {
         ShaderData data;
         ShaderType type;
         std::ifstream stream(filename);
+        if (stream.fail()) {
+            std::cout << "Could not open " << filename << std::endl;
+        }
         std::string line;
         std::stringstream ss[2];
         while (getline(stream, line)) {

@@ -3,7 +3,7 @@
 GameManager::GameManager(GLFWwindow* window, float width, float height)
     : window(window), dt(0), width(width), height(height), renderer(width, height),
     shaderManager("shaderList.txt"), player(this->shaderManager.shaders["res/shaders/spriteShader.glsl"]),
-    enemy(this->shaderManager.shaders["res/shaders/spriteShader.glsl"])
+    lastEnemy(ENEMY_SPAWN_RATE)
 {
     this->lastTime = std::chrono::high_resolution_clock::now();
 }
@@ -15,11 +15,20 @@ void GameManager::start() {
     while (!glfwWindowShouldClose(window)) {
         this->updateDt();
         this->updateInput();
+        this->lastEnemy += dt;
+        if (this->lastEnemy > ENEMY_SPAWN_RATE) {
+            //this->enemies.push_back(Enemy(this->shaderManager.shaders["res/shaders/spriteShader.glsl"]));
+            this->lastEnemy = 0.0f;
+        }
+        for (auto& enemy : this->enemies) {
+            enemy.update(dt);
+        }
         this->player.update(this->dt);
-        this->enemy.update(this->dt);
         this->renderer.Clear();
         this->player.draw(&this->renderer);
-        this->enemy.draw(&this->renderer);
+        for (auto& enemy : this->enemies) {
+            enemy.draw(&this->renderer);
+        }
         glfwSwapBuffers(window);
         glfwPollEvents();
         dt = 0.0f;

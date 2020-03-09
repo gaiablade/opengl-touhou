@@ -13,8 +13,7 @@ class Entity {
         ga::Velocity2D velocity;
         ga::Size2D size;
         ga::Texture* texture;
-        ga::Sprite sprite;
-        ga::Shader* shader;
+        ga::Rect2D sprite;
     public:
         Entity(const std::string& textureFile, ga::Shader* shader = nullptr);
         ~Entity();

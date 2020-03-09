@@ -11,5 +11,6 @@ namespace ga {
             ShaderManager(const std::string& shaderList);
             ~ShaderManager();
             std::unordered_map<std::string, ga::Shader*> shaders;
+            static ga::Shader* genericColorShader, *genericSpriteShader;
     };
 };

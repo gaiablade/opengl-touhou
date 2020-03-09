@@ -35,6 +35,9 @@
  */
 #include "Graphics/Shader.h"
 #include "Graphics/ShaderManager.h"
+#include "Graphics/Rect.h"
+#include "Graphics/Rect2D.h"
+#include "Graphics/ColorRect.h"
 #include "Graphics/Sprite.h"
 #include "Graphics/Texture.h"
 
