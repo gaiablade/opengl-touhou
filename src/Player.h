@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 #include <list>
-#include "OpenGLLib/Graphics.h"
-#include "OpenGLLib/Input.h"
+#include "GaiaGL/Graphics.h"
+#include "GaiaGL/Input.h"
 
 #include "Entity.h"
 #include "Laser.h"
@@ -15,7 +15,7 @@ const float LASER_DELAY = 0.2f;
 class Player : public Entity {
     private:
         float lastLaser;
-        std::list<Laser> lasers;
+        std::list<Laser*> lasers;
     public:
         Player(ga::Shader* shader = nullptr);
         ~Player();

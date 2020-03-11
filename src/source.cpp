@@ -5,8 +5,8 @@
 #include <string>
 #include <cmath>
 
-#include "OpenGLLib/Graphics.h"
-#include "OpenGLLib/Input.h"
+#include "GaiaGL/Graphics.h"
+#include "GaiaGL/Input.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"

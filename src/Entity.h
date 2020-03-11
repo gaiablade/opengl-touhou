@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
-#include "OpenGLLib/Graphics.h"
-#include "OpenGLLib/Input.h"
+#include "GaiaGL/Graphics.h"
+#include "GaiaGL/Input.h"
 
 struct Size2D {
     float width, height;

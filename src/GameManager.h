@@ -9,15 +9,19 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Laser.h"
-#include "OpenGLLib/Graphics.h"
+#include "GaiaGL/Graphics.h"
 
 const float ENEMY_SPAWN_RATE = 2.0f;
+const float STAT_BAR_WIDTH = 230.0f;
 
 class Player;
 
 class GameManager {
     private:
         ga::ShaderManager shaderManager;
+        ga::Texture bgTexture;
+        ga::Rect2D background;
+        ga::Rect2D statBar;
         float width, height;
         GLFWwindow* window;
         Player player;

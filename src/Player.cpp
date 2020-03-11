@@ -24,12 +24,13 @@ void Player::update(float dt) {
     this->position.y -= (Player::down  ? 1 : 0) * dt * PLAYER_SPEED;
     this->position.y += (Player::up    ? 1 : 0) * dt * PLAYER_SPEED;
     if (Player::z && this->lastLaser >= LASER_DELAY) {
-        this->lasers.push_back(Laser(5, 20, this->position.x + this->size.width / 2, this->position.y + this->size.height - 10));
+        this->lasers.push_back(new Laser(5, 20, this->position.x + this->size.width / 2, this->position.y + this->size.height - 10));
         this->lastLaser = 0;
     }
-    for (std::list<Laser>::iterator laser = this->lasers.begin(); laser != this->lasers.end(); laser++) {
-        laser->update(dt);
-        if (laser->position.y > 600) {
+    for (std::list<Laser*>::iterator laser = this->lasers.begin(); laser != this->lasers.end(); laser++) {
+        (*laser)->update(dt);
+        if ((*laser)->position.y > 600) {
+            delete *laser;
             this->lasers.erase(laser);
             break;
         }
@@ -39,7 +40,7 @@ void Player::update(float dt) {
 
 void Player::draw(ga::Renderer* renderer) {
     for (auto& laser : this->lasers) {
-        laser.draw(renderer);
+        laser->draw(renderer);
     }
     renderer->Draw(this->sprite);
 }

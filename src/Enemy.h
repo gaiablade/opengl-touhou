@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "OpenGLLib/Graphics.h"
+#include "GaiaGL/Graphics.h"
 
 #include "Entity.h"
 
