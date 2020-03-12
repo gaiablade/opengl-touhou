@@ -11,7 +11,7 @@
 #include "Laser.h"
 #include "GaiaGL/Graphics.h"
 
-const float ENEMY_SPAWN_RATE = 2.0f;
+const float ENEMY_SPAWN_RATE = 1.0f;
 const float STAT_BAR_WIDTH = 230.0f;
 
 class Player;
@@ -25,7 +25,7 @@ class GameManager {
         float width, height;
         GLFWwindow* window;
         Player player;
-        std::list<Enemy> enemies;
+        std::list<Enemy*> enemies;
         ga::Renderer renderer;
         float elapsedTime;
         float lastEnemy;

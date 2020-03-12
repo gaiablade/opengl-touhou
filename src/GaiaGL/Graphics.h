@@ -42,6 +42,14 @@
 #include "Graphics/Texture.h"
 
 /*
+ * Component Structures:
+ */
+#include "Graphics/Position2D.h"
+#include "Graphics/Size2D.h"
+#include "Graphics/Velocity2D.h"
+#include "Graphics/Rotation2D.h"
+
+/*
  * Debugging:
  */
 #include "Graphics/GLCall.h"

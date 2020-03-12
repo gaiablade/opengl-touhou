@@ -8,6 +8,13 @@ Entity::Entity(const std::string& textureFile, ga::Shader* shader)
     this->position.y = 0;
 }
 
+Entity::Entity(ga::Color color, float width, float height)
+    : sprite(color, width, height), texture(nullptr)
+{
+    this->size = { width, height };
+    this->position = { 0.0f, 0.0f };
+}
+
 Entity::~Entity() {
 }
 

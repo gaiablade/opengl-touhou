@@ -1,7 +1,8 @@
 #include "Enemy.h"
 
 Enemy::Enemy(ga::Shader* shader)
-    : Entity("res/textures/enemy_22x23.png", shader)
+    : Entity("res/textures/enemy_22x23.png", shader),
+    destroyed(false)
 {
     this->position.x = rand() % 800;
     this->position.y = 600;

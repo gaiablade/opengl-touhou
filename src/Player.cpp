@@ -24,16 +24,26 @@ void Player::update(float dt) {
     this->position.y -= (Player::down  ? 1 : 0) * dt * PLAYER_SPEED;
     this->position.y += (Player::up    ? 1 : 0) * dt * PLAYER_SPEED;
     if (Player::z && this->lastLaser >= LASER_DELAY) {
-        this->lasers.push_back(new Laser(5, 20, this->position.x + this->size.width / 2, this->position.y + this->size.height - 10));
+        this->lasers.push_back(new Laser(5, 20, this->position.x, this->position.y + this->size.height - 20));
         this->lastLaser = 0;
     }
     for (std::list<Laser*>::iterator laser = this->lasers.begin(); laser != this->lasers.end(); laser++) {
         (*laser)->update(dt);
+        // Check collision with enemies:
+        /*
+        for (auto enemy : *this->enemies) {
+            if ((*laser)->position.x < enemy->getPosition().x + enemy->getSize().width && (*laser)->position.x + (*laser)->size.width > enemy->getPosition().x) {
+                if ((*laser)->position.y < enemy->getPosition().y + enemy->getSize().height && (*laser)->position.y + (*laser)->size.height > enemy->getPosition().y) {
+                    enemy->destroyed = true;
+                }
+            }
+        }
         if ((*laser)->position.y > 600) {
             delete *laser;
             this->lasers.erase(laser);
             break;
         }
+        */
     }
     this->sprite.setPosition(this->position.x, this->position.y);
 }

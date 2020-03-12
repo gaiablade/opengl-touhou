@@ -7,7 +7,7 @@ DIRS = -I./GaiaGL/ -IGaiaGL/vendor/ -LGaiaGL/ -LGaiaGL/vendor/ -IGaiaGL/Graphics
 $(EXEC): source.cpp Player.o Enemy.o Laser.o GameManager.o Entity.o GaiaGL/GaiaGL.a
 	$(COMP) $^ -o $(EXEC) $(LIB) $(FLAGS) $(DIRS)
 
-Player.o: Player.cpp Player.h Entity.o
+Player.o: Player.cpp Player.h Entity.o Enemy.o Laser.o
 	$(COMP) $< -c $(FLAGS) $(DIRS)
 
 Enemy.o: Enemy.cpp Enemy.h Entity.o

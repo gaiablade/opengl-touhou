@@ -9,7 +9,9 @@ GameManager::GameManager(GLFWwindow* window, float width, float height)
     lastEnemy(ENEMY_SPAWN_RATE)
 {
     this->lastTime = std::chrono::high_resolution_clock::now();
-    this->statBar.setPosition(800.0f - STAT_BAR_WIDTH, 0.0f);
+    this->statBar.setPosition(800.0f - STAT_BAR_WIDTH / 2, 300.0f);
+    this->player.setEnemyListPointer(&this->enemies);
+    this->background.setPosition(400.0f, 300.0f);
 }
 
 GameManager::~GameManager() {
@@ -21,18 +23,25 @@ void GameManager::start() {
         this->updateInput();
         this->lastEnemy += dt;
         if (this->lastEnemy > ENEMY_SPAWN_RATE) {
-            //this->enemies.push_back(Enemy(this->shaderManager.shaders["res/shaders/spriteShader.glsl"]));
+            this->enemies.push_back(new Enemy(this->shaderManager.shaders["res/shaders/spriteShader.glsl"]));
             this->lastEnemy = 0.0f;
         }
         for (auto& enemy : this->enemies) {
-            enemy.update(dt);
+            enemy->update(dt);
+        }
+        for (auto enemy = this->enemies.begin(); enemy != this->enemies.end(); enemy++) {
+            if ((*enemy)->destroyed) {
+                delete *enemy;
+                this->enemies.erase(enemy);
+                break;
+            }
         }
         this->player.update(this->dt);
         this->renderer.Clear();
         renderer.Draw(this->background);
         this->player.draw(&this->renderer);
         for (auto& enemy : this->enemies) {
-            enemy.draw(&this->renderer);
+            enemy->draw(&this->renderer);
         }
         renderer.Draw(this->statBar);
         glfwSwapBuffers(window);

@@ -11,5 +11,6 @@ class Enemy : public Entity {
         Enemy(ga::Shader* shader = nullptr);
         ~Enemy();
         void update(float dt);
+        bool destroyed;
     private:
 };

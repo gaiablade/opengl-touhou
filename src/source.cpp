@@ -30,7 +30,7 @@ int main() {
         return -1;
     }
 
-    window = glfwCreateWindow(screenDimensions::width, screenDimensions::height, "Game", NULL, NULL);
+    window = glfwCreateWindow(screenDimensions::width, screenDimensions::height, "Touhou", NULL, NULL);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 

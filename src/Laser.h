@@ -1,8 +1,10 @@
 #pragma once
 #include <iostream>
+#include <vector>
+#include <cmath>
 #include "GaiaGL/Graphics.h"
 
-const float LASER_SPEED = 300;
+const float LASER_SPEED = 525.0f;
 
 class Laser {
     friend class Player;
@@ -13,10 +15,12 @@ class Laser {
         void draw(ga::Renderer* renderer);
         static ga::Shader* laserShader;
     private:
-        ga::Position2D position;
-        ga::Velocity2D velocity;
-        //ga::ColorRect sprite;
+        std::vector<ga::Position2D> positions;
+        //ga::Position2D position;
+        std::vector<ga::Velocity2D> velocities;
+        //ga::Velocity2D velocity;
+        ga::Size2D size;
         float rValue;
-        ga::Rect2D sprite;
+        std::vector<ga::Rect2D*> sprites;
         ga::Shader* shader;
 };

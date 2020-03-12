@@ -7,6 +7,11 @@
 #include <iostream>
 #include <vector>
 
+#include "Color.h"
+#include "Position2D.h"
+#include "Size2D.h"
+#include "Velocity2D.h"
+#include "Rotation2D.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
@@ -15,22 +20,6 @@
 #include "GLCall.h"
 
 namespace ga {
-    struct Position2D {
-        float x, y;
-    };
-
-    struct Velocity2D {
-        float x, y;
-    };
-
-    struct Size2D {
-        float width, height;
-    };
-
-    struct Color {
-        float r, g, b, a;
-    };
-
     /*
      * Rect class:
      * Type: Base, Pure Virtual.
@@ -46,6 +35,7 @@ namespace ga {
             ga::Shader* shader;
             ga::Size2D size;
             ga::Position2D position;
+            ga::Rotation2D rotation;
         public:
             Rect();
             virtual ~Rect();
@@ -59,7 +49,9 @@ namespace ga {
             inline void setWidth(const uint32_t& width) { this->size.width = width; }
             inline void setHeight(const uint32_t& height) { this->size.height = height; }
             inline void setPosition(const float& x, const float& y) { this->position.x = x; this->position.y = y; }
+            inline void setPosition(const ga::Position2D& position) { this->position = position; }
             inline void setShader(ga::Shader* shader) { this->shader = shader; }
+            inline void setRotation(ga::Rotation2D rotation) { this->rotation = rotation; }
             virtual inline void setColor(ga::Color color) { return; }
 
             virtual void Bind() = 0;

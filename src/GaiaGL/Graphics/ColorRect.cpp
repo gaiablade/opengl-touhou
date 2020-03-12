@@ -10,11 +10,19 @@ namespace ga {
     {
         this->size.width = width;
         this->size.height = height;
+        /*
         this->data = {
             0.0f,                    0.0f,                     0.0f, 0.0f,
             (float)this->size.width, 0.0f,                     1.0f, 0.0f,
             (float)this->size.width, (float)this->size.height, 1.0f, 1.0f,
             0.0f,                    (float)this->size.height, 0.0f, 1.0f
+        };
+        */
+        this->data = {
+            -(float)this->size.width / 2, -(float)this->size.height / 2, 0.0f, 0.0f,
+             (float)this->size.width / 2, -(float)this->size.height / 2, 1.0f, 0.0f,
+             (float)this->size.width / 2,  (float)this->size.height / 2, 1.0f, 1.0f,
+            -(float)this->size.width / 2,  (float)this->size.height / 2, 0.0f, 1.0f
         };
         this->vb = new VertexBuffer((const void*)&this->data[0], 16 * sizeof(float));
         this->bld = new BufferLayoutData;
@@ -36,7 +44,9 @@ namespace ga {
         this->ib->Bind();
 
         // Calculate Model Matrix:
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(this->position.x, this->position.y, 0.0f));
+        glm::mat4 model(1.0f);
+        model = glm::translate(model, glm::vec3(this->position.x, this->position.y, 0.0f));
+        model = glm::rotate(model, glm::radians(this->rotation.angle), glm::vec3(0.0f, 0.0f, 1.0f));
         this->shader->SetUniformMat4f("Model", model);
         this->shader->SetUniform4f("u_Color", this->color.r, this->color.g, this->color.b, this->color.a);
     }
