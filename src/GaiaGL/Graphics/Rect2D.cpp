@@ -12,8 +12,7 @@ namespace ga {
         if (!ShaderManager::genericSpriteShader) {
             ShaderManager::genericSpriteShader = new ga::Shader("GaiaGL/Graphics/shaders/spriteShader.glsl");
         }
-        //this->shader = ShaderManager::genericSpriteShader;
-        this->shader = new ga::Shader("GaiaGL/Graphics/shaders/spriteShader.glsl");
+        this->shader = ShaderManager::genericSpriteShader;
         this->rect->setShader(this->shader);
     }
 
@@ -23,10 +22,8 @@ namespace ga {
         if (!ShaderManager::genericColorShader) {
             ShaderManager::genericColorShader = new ga::Shader("GaiaGL/Graphics/shaders/colorShader.glsl");
         }
-        //this->shader = ShaderManager::genericColorShader;
-        this->shader = new ga::Shader("GaiaGL/Graphics/shaders/colorShader.glsl");
+        this->shader = ShaderManager::genericColorShader;
         this->rect->setShader(this->shader);
-        this->rect->Bind();
     }
 
     Rect2D::~Rect2D() {
@@ -37,18 +34,17 @@ namespace ga {
         if (!ShaderManager::genericColorShader) {
             ShaderManager::genericColorShader = new ga::Shader("GaiaGL/Graphics/shaders/colorShader.glsl");
         }
-        //this->shader = ShaderManager::genericColorShader;
-        this->shader = new ga::Shader("GaiaGL/Graphics/shaders/colorShader.glsl");
+        this->shader = ShaderManager::genericColorShader;
         this->rect->setShader(this->shader);
+        this->rect->setColor(color);
     }
 
     void Rect2D::setColor(const int& r, const int& g, const int& b, const int& a) {
         if (!ShaderManager::genericColorShader) {
             ShaderManager::genericColorShader = new ga::Shader("GaiaGL/Graphics/shaders/colorShader.glsl");
         }
-        //this->shader = ShaderManager::genericColorShader;
-        this->shader = new ga::Shader("GaiaGL/Graphics/shaders/colorShader.glsl");
+        this->shader = ShaderManager::genericColorShader;
         this->rect->setShader(this->shader);
-        //this->color = {r, g, b, a};
+        this->rect->setColor(ga::Color{r, g, b, a});
     }
 };

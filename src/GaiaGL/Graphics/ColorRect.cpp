@@ -10,14 +10,6 @@ namespace ga {
     {
         this->size.width = width;
         this->size.height = height;
-        /*
-        this->data = {
-            0.0f,                    0.0f,                     0.0f, 0.0f,
-            (float)this->size.width, 0.0f,                     1.0f, 0.0f,
-            (float)this->size.width, (float)this->size.height, 1.0f, 1.0f,
-            0.0f,                    (float)this->size.height, 0.0f, 1.0f
-        };
-        */
         this->data = {
             -(float)this->size.width / 2, -(float)this->size.height / 2, 0.0f, 0.0f,
              (float)this->size.width / 2, -(float)this->size.height / 2, 1.0f, 0.0f,

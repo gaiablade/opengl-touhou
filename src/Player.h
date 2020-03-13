@@ -11,7 +11,7 @@
 class Laser;
 
 const int PLAYER_SPEED = 200;
-const float LASER_DELAY = 0.2f;
+const float LASER_DELAY = 0.08f;
 
 class Player : public Entity {
     private:
@@ -27,5 +27,6 @@ class Player : public Entity {
         static bool left, right, down, up, z;
         ga::DirectionalComponent inputHandler;
         inline void setEnemyListPointer(std::list<Enemy*>* enemyList) { this->enemies = enemyList; }
+        inline std::list<Laser*>* getLasers() { return &this->lasers; }
         float rotation;
 };

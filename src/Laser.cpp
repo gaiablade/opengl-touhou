@@ -17,14 +17,14 @@ Laser::Laser(const int& width, const int& height, const float& x, const float& y
     this->velocities.push_back(ga::Velocity2D{0.0f, 1.0f});
     this->positions.push_back(ga::Position2D{x, y});
 
-    float leftAngle = 15.0f;
+    float leftAngle = 5.0f;
     ga::Rect2D* rightLaser = new ga::Rect2D(laserColor, width, height);
     rightLaser->setRotation(360.0f - leftAngle);
     this->sprites.push_back(rightLaser);
     this->velocities.push_back(ga::Velocity2D{sin(leftAngle * PI / 180), cos(leftAngle * PI / 180)});
     this->positions.push_back(ga::Position2D{x, y});
 
-    float rightAngle = -15.0f;
+    float rightAngle = -5.0f;
     ga::Rect2D* leftLaser = new ga::Rect2D(laserColor, width, height);
     leftLaser->setRotation(360.0f - rightAngle);
     this->sprites.push_back(leftLaser);

@@ -29,21 +29,17 @@ void Player::update(float dt) {
     }
     for (std::list<Laser*>::iterator laser = this->lasers.begin(); laser != this->lasers.end(); laser++) {
         (*laser)->update(dt);
-        // Check collision with enemies:
-        /*
-        for (auto enemy : *this->enemies) {
-            if ((*laser)->position.x < enemy->getPosition().x + enemy->getSize().width && (*laser)->position.x + (*laser)->size.width > enemy->getPosition().x) {
-                if ((*laser)->position.y < enemy->getPosition().y + enemy->getSize().height && (*laser)->position.y + (*laser)->size.height > enemy->getPosition().y) {
-                    enemy->destroyed = true;
+        for (int i = 0; i < (*laser)->sprites.size(); i++) {
+            for (auto& enemy : *this->enemies) {
+                if ((*laser)->positions[i].x - (*laser)->size.width / 2 < enemy->getPosition().x + enemy->getSize().width / 2\
+                        && (*laser)->positions[i].x + (*laser)->size.width / 2 > enemy->getPosition().x) {
+                    if ((*laser)->positions[i].y - (*laser)->size.height / 2 < enemy->getPosition().y + enemy->getSize().height / 2
+                            && (*laser)->positions[i].y + (*laser)->size.height / 2 > enemy->getPosition().y - enemy->getSize().height / 2) {
+                        enemy->destroyed = true;
+                    }
                 }
             }
         }
-        if ((*laser)->position.y > 600) {
-            delete *laser;
-            this->lasers.erase(laser);
-            break;
-        }
-        */
     }
     this->sprite.setPosition(this->position.x, this->position.y);
 }

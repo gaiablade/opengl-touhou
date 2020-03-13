@@ -4,7 +4,7 @@
 #include <cmath>
 #include "GaiaGL/Graphics.h"
 
-const float LASER_SPEED = 525.0f;
+const float LASER_SPEED = 1000.0f;
 
 class Laser {
     friend class Player;
@@ -16,9 +16,7 @@ class Laser {
         static ga::Shader* laserShader;
     private:
         std::vector<ga::Position2D> positions;
-        //ga::Position2D position;
         std::vector<ga::Velocity2D> velocities;
-        //ga::Velocity2D velocity;
         ga::Size2D size;
         float rValue;
         std::vector<ga::Rect2D*> sprites;
