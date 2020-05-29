@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <cmath>
 #include "GaiaGL/Graphics.h"
 
 #include "Entity.h"
@@ -13,4 +14,5 @@ class Enemy : public Entity {
         void update(float dt);
         bool destroyed;
     private:
+        double lifespan;
 };

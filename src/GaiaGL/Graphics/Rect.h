@@ -12,6 +12,7 @@
 #include "Size2D.h"
 #include "Velocity2D.h"
 #include "Rotation2D.h"
+#include "Scale2D.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
@@ -36,6 +37,7 @@ namespace ga {
             ga::Size2D size;
             ga::Position2D position;
             ga::Rotation2D rotation;
+            ga::Scale2D scale;
         public:
             Rect();
             virtual ~Rect();
@@ -50,6 +52,8 @@ namespace ga {
             inline void setHeight(const uint32_t& height) { this->size.height = height; }
             inline void setPosition(const float& x, const float& y) { this->position.x = x; this->position.y = y; }
             inline void setPosition(const ga::Position2D& position) { this->position = position; }
+            inline void setScale(const ga::Scale2D& scale) { this->scale = scale; }
+            inline void setScale(const float x, const float y) { this->scale = ga::Scale2D(x, y); }
             inline void setShader(ga::Shader* shader) { this->shader = shader; }
             inline void setRotation(ga::Rotation2D rotation) { this->rotation = rotation; }
             virtual inline void setColor(ga::Color color) { return; }

@@ -28,6 +28,7 @@ namespace ga {
             inline ga::Shader* getShader() const { return this->shader; }
             inline void setPosition(const float& x, const float& y) { this->rect->setPosition(x, y); }
             inline void setRotation(ga::Rotation2D rotation) { this->rect->setRotation(rotation); }
+            inline void setScale(ga::Scale2D scale) { this->rect->setScale(scale); }
             ga::Rect* rect;
             ga::Shader* shader;
     };

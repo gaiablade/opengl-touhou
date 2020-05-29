@@ -39,6 +39,7 @@ namespace ga {
         glm::mat4 model(1.0f);
         model = glm::translate(model, glm::vec3(this->position.x, this->position.y, 0.0f));
         model = glm::rotate(model, glm::radians(this->rotation.angle), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, glm::vec3(this->scale.x, this->scale.y, 1.0f));
         this->shader->SetUniformMat4f("Model", model);
         this->shader->SetUniform4f("u_Color", this->color.r, this->color.g, this->color.b, this->color.a);
     }
