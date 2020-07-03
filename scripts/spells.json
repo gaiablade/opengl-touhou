@@ -1,0 +1,12 @@
+{
+    "expanding-ring": {
+        "number": "8",
+        "startPosition": "owner",
+        "trajectory": {
+            "0": "straight",
+            "1": "awayFromOwner"
+        },
+        "formation": "radial",
+        "speed": "3"
+    }
+}

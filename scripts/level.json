@@ -1,0 +1,54 @@
+{
+    "enemy_spawns": {
+        "0": {
+            "0": {
+                "enemy": "red_orb",
+                "position": {
+                    "x": "100",
+                    "y": "0"
+                }
+            },
+            "1": {
+                "enemy": "red_orb2",
+                "position": {
+                    "x": "200",
+                    "y": "0"
+                }
+            },
+            "2": {
+                "enemy": "shroom",
+                "position": {
+                    "x": "600",
+                    "y": "0"
+                }
+            }
+        },
+        "50": {
+            "0": {
+                "enemy": "kirby",
+                "position": {
+                    "x": "400",
+                    "y": "0"
+                }
+            }
+        },
+        "100": {
+            "0": {
+                "enemy": "red_orb",
+                "position": {
+                    "x": "100",
+                    "y": "0"
+                }
+            }
+        },
+        "254": {
+            "0": {
+                "enemy": "red_orb",
+                "position": {
+                    "x": "500",
+                    "y": "0"
+                }
+            }
+        }
+    }
+}

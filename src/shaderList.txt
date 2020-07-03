@@ -1,2 +1,0 @@
-res/shaders/spriteShader.glsl
-res/shaders/colorShader.glsl

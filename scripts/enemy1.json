@@ -1,0 +1,83 @@
+{
+    "init": {
+        "position": {
+            "x": "center",
+            "y": "top"
+        },
+        "appearance": {
+            "sprite": "red_fog.png",
+            "textureRectangle": {
+                "left": "0",
+                "top": "0",
+                "width": "50",
+                "height": "50"
+            }
+        }
+    },
+    "loop": {
+        "conditionals": {
+            "0": {
+                "dependence": "frame",
+                "conditional": "if",
+                "operator": "between",
+                "value": "60",
+                "value2": "120",
+                "behaviour": {
+                    "moveX": {
+                        "x": "-1"
+                    },
+                    "moveY": {
+                        "y": "1"
+                    },
+                    "fire": {
+                        "spell": "expanding-ring"
+                    }
+                }
+            },
+            "1": {
+                "dependence": "frame",
+                "conditional": "elseif",
+                "operator": "between",
+                "value": "180",
+                "value2": "240",
+                "behaviour": {
+                    "moveX": {
+                        "x": "-1"
+                    },
+                    "moveY": {
+                        "y": "1"
+                    }
+                }
+            },
+            "2": {
+                "dependence": "frame",
+                "conditional": "elseif",
+                "operator": "between",
+                "value": "300",
+                "value2": "400",
+                "behaviour": {
+                    "moveX": {
+                        "x": "-2"
+                    },
+                    "moveY": {
+                        "y": "-2"
+                    }
+                }
+            },
+            "3": {
+                "dependence": "none",
+                "conditional": "else",
+                "operator": "none",
+                "value": "null",
+                "behaviour": {
+                    "moveX": {
+                        "x": "1"
+                    },
+                    "moveY": {
+                        "y": "1"
+                    }
+                }
+            }
+        }
+    }
+}

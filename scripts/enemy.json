@@ -1,0 +1,268 @@
+{
+    "0": {
+        "name": "red_orb",
+        "init": {
+            "position": {
+                "x": "200",
+                "y": "0"
+            },
+            "appearance": {
+                "sprite": "red_fog.png",
+                "textureRectangle": {
+                    "left": "0",
+                    "top": "0",
+                    "width": "50",
+                    "height": "50"
+                }
+            }
+        },
+        "loop": {
+            "conditionals": {
+                "0": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "between",
+                    "value": "60",
+                    "value2": "120",
+                    "behaviour": {
+                        "moveX": {
+                            "x": "-1"
+                        },
+                        "moveY": {
+                            "y": "1"
+                        },
+                        "fire": {
+                            "spell": "expanding-ring"
+                        }
+                    }
+                },
+                "1": {
+                    "dependence": "frame",
+                    "conditional": "elseif",
+                    "operator": "between",
+                    "value": "180",
+                    "value2": "240",
+                    "behaviour": {
+                        "moveX": {
+                            "x": "-1"
+                        },
+                        "moveY": {
+                            "y": "1"
+                        }
+                    }
+                },
+                "2": {
+                    "dependence": "frame",
+                    "conditional": "elseif",
+                    "operator": "between",
+                    "value": "300",
+                    "value2": "400",
+                    "behaviour": {
+                        "moveX": {
+                            "x": "-2"
+                        },
+                        "moveY": {
+                            "y": "-2"
+                        }
+                    }
+                },
+                "3": {
+                    "dependence": "none",
+                    "conditional": "else",
+                    "operator": "none",
+                    "value": "null",
+                    "behaviour": {
+                        "moveX": {
+                            "x": "1"
+                        },
+                        "moveY": {
+                            "y": "1"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "1": {
+        "name": "red_orb2",
+        "init": {
+            "position": {
+                "x": "300",
+                "y": "0"
+            },
+            "appearance": {
+                "sprite": "red_fog.png",
+                "textureRectangle": {
+                    "left": "0",
+                    "top": "0",
+                    "width": "50",
+                    "height": "50"
+                }
+            }
+        },
+        "loop": {
+            "conditionals": {
+                "0": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "between",
+                    "value": "60",
+                    "value2": "120",
+                    "behaviour": {
+                        "moveX": {
+                            "x": "-1"
+                        },
+                        "moveY": {
+                            "y": "1"
+                        },
+                        "fire": {
+                            "spell": "expanding-ring"
+                        }
+                    }
+                },
+                "1": {
+                    "dependence": "frame",
+                    "conditional": "elseif",
+                    "operator": "between",
+                    "value": "180",
+                    "value2": "240",
+                    "behaviour": {
+                        "moveX": {
+                            "x": "-1"
+                        },
+                        "moveY": {
+                            "y": "1"
+                        }
+                    }
+                },
+                "2": {
+                    "dependence": "frame",
+                    "conditional": "elseif",
+                    "operator": "between",
+                    "value": "300",
+                    "value2": "400",
+                    "behaviour": {
+                        "moveX": {
+                            "x": "-2"
+                        },
+                        "moveY": {
+                            "y": "-2"
+                        }
+                    }
+                },
+                "3": {
+                    "dependence": "none",
+                    "conditional": "else",
+                    "operator": "none",
+                    "value": "null",
+                    "behaviour": {
+                        "moveX": {
+                            "x": "1"
+                        },
+                        "moveY": {
+                            "y": "1"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "2": {
+        "name": "shroom",
+        "init": {
+            "position": {
+                "x": "100",
+                "y": "0"
+            },
+            "appearance": {
+                "sprite": "mario_mushroom.png",
+                "textureRectangle": {
+                    "left": "0",
+                    "top": "0",
+                    "width": "1200",
+                    "height": "1194"
+                },
+                "scale": {
+                    "width": "0.047",
+                    "height": "0.047"
+                }
+            }
+        },
+        "loop": {
+            "conditionals": {
+                "0": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "between",
+                    "value": "100",
+                    "value2": "200",
+                    "behaviour": {
+                        "moveY": {
+                            "y": "1"
+                        }
+                    }
+                },
+                "1": {
+                    "dependence": "frame",
+                    "conditional": "elseif",
+                    "operator": "between",
+                    "value": "300",
+                    "value2": "400",
+                    "behaviour": {
+                        "moveY": {
+                            "y": "0"
+                        }
+                    }
+                },
+                "2": {
+                    "dependence": "frame",
+                    "conditional": "elseif",
+                    "operator": "greaterthan",
+                    "value": "30",
+                    "behaviour": {
+                        "moveY": {
+                            "y": "2"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "3": {
+        "name": "kirby",
+        "init": {
+            "appearance": {
+                "sprite": "korby.png",
+                "textureRectangle": {
+                    "left": "0",
+                    "top": "0",
+                    "width": "800",
+                    "height": "779"
+                },
+                "scale": {
+                    "width": "0.0625",
+                    "height": "0.0625"
+                }
+            },
+            "position": {
+                "x": "300",
+                "y": "0"
+            }
+        },
+        "loop": {
+            "conditionals": {
+                "0": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "notequal",
+                    "value": "0",
+                    "behaviour": {
+                        "moveY": {
+                            "y": "1"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
