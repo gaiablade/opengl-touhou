@@ -37,12 +37,54 @@ namespace th {
                 obj.objs.insert(std::pair<std::string, jsonObj>(key, jsonObj{ .type = JSTYPE::Obj }));
                 ParseObject(in, obj.objs[key]);
             }
+            else if (c == '[') {
+                obj.objs.insert(std::pair<std::string, jsonObj>(key, jsonObj{ .type = JSTYPE::Arr }));
+                ParseArray(in, obj.objs[key]);
+            }
             else { // value
                 std::getline(in, s);
                 removeChars("\",", s);
                 std::string val = s;
                 obj.objs.insert(std::pair<std::string, jsonObj>(key, jsonObj{ .type = JSTYPE::Val, .val = val }));
             }
+        }
+    }
+
+    void Parser::ParseArray(std::ifstream& in, jsonObj& obj, int index) {
+        std::string s;
+        while (in >> s && removeChar(',', s) && s != "]") {
+            removeChars("\":", s);
+            /*
+            std::string key = s;
+            */
+            std::stringstream ss;
+            ss << index;
+            std::string key = ss.str();
+            /*
+            char c = ' ';
+            while (c == ' ') {
+                in.read(&c, 1);
+            }
+            */
+            //if (c == '{') {
+            if (s == "{") {
+                obj.objs.insert(std::pair<std::string, jsonObj>(key, jsonObj{ .type = JSTYPE::Obj }));
+                ParseObject(in, obj.objs[key]);
+            }
+            //else if (c == '[') {
+            else if (s == "[") {
+                obj.objs.insert(std::pair<std::string, jsonObj>(key, jsonObj{ .type = JSTYPE::Arr }));
+                ParseArray(in, obj.objs[key]);
+            }
+            else { // value
+            /*
+                std::getline(in, s);
+                */
+                removeChars("\",", s);
+                std::string val = s;
+                obj.objs.insert(std::pair<std::string, jsonObj>(key, jsonObj{ .type = JSTYPE::Val, .val = val }));
+            }
+            index++;
         }
     }
 
@@ -66,6 +108,14 @@ namespace th {
             std::cout << r.first << ": ";
             if (r.second.type == JSTYPE::Val) {
                 std::cout << r.second.val << '\n';
+            }
+            else if (r.second.type == JSTYPE::Arr) {
+                std::cout << "[\n";
+                PrintJSON(r.second, indentation + 1);
+                for (int i = 0; i < indentation; i++) {
+                    std::cout << "  ";
+                }
+                std::cout << "]\n";
             }
             else {
                 std::cout << "{\n";

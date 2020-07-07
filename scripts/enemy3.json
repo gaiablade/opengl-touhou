@@ -1,0 +1,128 @@
+{
+    "0": {
+        "name": "red_orb",
+        "init": {
+            "position": {
+                "x": "200",
+                "y": "0"
+            },
+            "appearance": {
+                "sprite": "blue_angel.png",
+                "textureRectangle": {
+                    "width": "32",
+                    "height": "38"
+                },
+                "scale": {
+                    "width": "1.5625",
+                    "height": "1.5625"
+                }
+            },
+            "animations": [
+                {
+                    "framesPerStep": "20",
+                    "path": [
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "6",
+                        "5"
+                    ]
+                }
+            ],
+            "defaultAnimation": "0"
+        },
+        "loop": {
+            "conditionals": {
+                "0": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "between",
+                    "value": "60",
+                    "value2": "120",
+                    "behaviour": {
+                        "moveX": {
+                            "x": "-1"
+                        },
+                        "moveY": {
+                            "y": "1"
+                        }
+                    }
+                },
+                "1": {
+                    "dependence": "frame",
+                    "conditional": "elseif",
+                    "operator": "between",
+                    "value": "180",
+                    "value2": "240",
+                    "behaviour": {
+                        "moveX": {
+                            "x": "-1"
+                        },
+                        "moveY": {
+                            "y": "1"
+                        }
+                    }
+                },
+                "2": {
+                    "dependence": "none",
+                    "conditional": "else",
+                    "operator": "none",
+                    "value": "null",
+                    "behaviour": {
+                        "moveX": {
+                            "x": "1"
+                        },
+                        "moveY": {
+                            "y": "1"
+                        }
+                    }
+                },
+                "3": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "equal",
+                    "value": "62",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "expanding-ring-8"
+                        }
+                    }
+                },
+                "4": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "equal",
+                    "value": "230",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "expanding-ring-32"
+                        }
+                    }
+                },
+                "5": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "equal",
+                    "value": "310",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "expanding-ring-32"
+                        }
+                    }
+                },
+                "6": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "equal",
+                    "value": "400",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "expanding-ring-32"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

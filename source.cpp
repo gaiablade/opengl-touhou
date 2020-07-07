@@ -14,7 +14,6 @@ int main() {
     // Extract important parameters
     int width, height;
     const std::string& title = r.obj["title"].val;
-    const std::string& type  = r.obj["type"].val;
     auto dimensions = r.obj["dimensions"];
     std::stringstream ss[2] = {
         std::stringstream(dimensions["width"].val),

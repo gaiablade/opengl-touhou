@@ -5,6 +5,7 @@
 #include <functional>
 #include <GaiaGL/Graphics.h>
 #include "Parse.hpp"
+#include "Spell.hpp"
 
 namespace th {
 
@@ -33,10 +34,17 @@ namespace th {
         std::vector<Behaviour> behaviours;
     };
 
+    struct AnimationParams {
+        std::vector<int> sequence;
+        int framesPerStep;
+    };
+
     struct EnemyParams {
         std::vector<Conditional> conditionalBehaviours;
         std::vector<Behaviour> staticBehaviours;
         ga::Sprite* sprite;
+        std::vector<AnimationParams> ap;
+        int defaultAnimation;
         int x, y;
         //int left, top, width, height;
     };
@@ -62,7 +70,11 @@ namespace th {
         std::vector<Conditional> conditionalBehvaiours;
         std::vector<Behaviour> staticBehaviours;
         ga::Position2D<float> position;
+        int polledSpell = -1;
         int passed = 0;
+        int currentAnimation = 0;
+        std::vector<AnimationParams> ap;
+        int currentFrame = 0;
     };
 
 }

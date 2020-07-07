@@ -1,6 +1,36 @@
 {
-    "expanding-ring": {
+    "0": {
+        "appearance": {
+            "sprite": "blue_fog.png",
+            "textureRectangle": {
+                "left": "0",
+                "top": "0",
+                "width": "10",
+                "height": "10"
+            }
+        },
+        "name": "expanding-ring-8",
         "number": "8",
+        "startPosition": "owner",
+        "trajectory": {
+            "0": "straight",
+            "1": "awayFromOwner"
+        },
+        "formation": "radial",
+        "speed": "3"
+    },
+    "1": {
+        "appearance": {
+            "sprite": "blue_fog.png",
+            "textureRectangle": {
+                "left": "0",
+                "top": "0",
+                "width": "10",
+                "height": "10"
+            }
+        },
+        "name": "expanding-ring-32",
+        "number": "32",
         "startPosition": "owner",
         "trajectory": {
             "0": "straight",

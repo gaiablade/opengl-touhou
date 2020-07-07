@@ -7,14 +7,30 @@
                 "y": "0"
             },
             "appearance": {
-                "sprite": "red_fog.png",
+                "sprite": "blue_angel.png",
                 "textureRectangle": {
-                    "left": "0",
-                    "top": "0",
-                    "width": "50",
-                    "height": "50"
+                    "width": "32",
+                    "height": "38"
+                },
+                "scale": {
+                    "width": "1.5625",
+                    "height": "1.5625"
                 }
-            }
+            },
+            "animations": [
+                {
+                    "framesPerStep": "25",
+                    "path": [
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "6",
+                        "5"
+                    ]
+                }
+            ],
+            "defaultAnimation": "0"
         },
         "loop": {
             "conditionals": {
@@ -30,9 +46,6 @@
                         },
                         "moveY": {
                             "y": "1"
-                        },
-                        "fire": {
-                            "spell": "expanding-ring"
                         }
                     }
                 },
@@ -77,6 +90,28 @@
                         },
                         "moveY": {
                             "y": "1"
+                        }
+                    }
+                },
+                "4": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "equal",
+                    "value": "62",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "expanding-ring-8"
+                        }
+                    }
+                },
+                "5": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "equal",
+                    "value": "230",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "expanding-ring-32"
                         }
                     }
                 }
@@ -93,8 +128,6 @@
             "appearance": {
                 "sprite": "red_fog.png",
                 "textureRectangle": {
-                    "left": "0",
-                    "top": "0",
                     "width": "50",
                     "height": "50"
                 }
@@ -114,9 +147,6 @@
                         },
                         "moveY": {
                             "y": "1"
-                        },
-                        "fire": {
-                            "spell": "expanding-ring"
                         }
                     }
                 },
@@ -163,6 +193,17 @@
                             "y": "1"
                         }
                     }
+                },
+                "4": {
+                    "dependence": "frame",
+                    "conditional": "if",
+                    "operator": "equal",
+                    "value": "200",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "expanding-ring-32"
+                        }
+                    }
                 }
             }
         }
@@ -177,8 +218,6 @@
             "appearance": {
                 "sprite": "mario_mushroom.png",
                 "textureRectangle": {
-                    "left": "0",
-                    "top": "0",
                     "width": "1200",
                     "height": "1194"
                 },
@@ -234,8 +273,6 @@
             "appearance": {
                 "sprite": "korby.png",
                 "textureRectangle": {
-                    "left": "0",
-                    "top": "0",
                     "width": "800",
                     "height": "779"
                 },

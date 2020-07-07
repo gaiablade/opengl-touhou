@@ -30,7 +30,7 @@ namespace th {
         if (curr_state.top()->status == 1) {
             delete curr_state.top();
             curr_state.pop();
-            curr_state.push(new DanmakuTest(this->window.getWidth(), this->window.getHeight()));
+            curr_state.push(new DanmakuTest(this->window.getWidth(), this->window.getHeight(), &this->window));
         }
     }
 }

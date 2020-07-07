@@ -14,10 +14,12 @@ namespace th {
             }
             if (obj["init"]["appearance"].has("textureRectangle")) {
                 auto& r = obj["init"]["appearance"]["textureRectangle"];
-                int left = r["left"].toInt();
-                int top = r["top"].toInt();
-                int width = r["width"].toInt();
-                int height = r["height"].toInt();
+                int textureWidth  = textures[spritePath]->getWidth();
+                int textureHeight = textures[spritePath]->getHeight();
+                int width         = r["width"].toInt();
+                int height        = r["height"].toInt();
+                int nRows         = textureHeight / height;
+                int nColumns      = textureWidth  / width;
                 ga::AnimationOptions opt {
                     .nFrames = 1, .nRows = 1, .nColumns = 1, .spriteWidth = width, .spriteHeight = height
                 };
@@ -55,6 +57,9 @@ namespace th {
         this->staticBehaviours = ep->staticBehaviours;
         this->position.x = ep->x;
         this->position.y = ep->y;
+        this->ap = ep->ap;
+        this->currentAnimation = ep->defaultAnimation;
+        this->currentFrame = ep->ap[ep->defaultAnimation].sequence[0];
     }
 
     Enemy::Enemy(const Enemy& old_obj)
@@ -136,6 +141,13 @@ namespace th {
 
     void Enemy::loop() {
         this->frame++;
+
+        // Animation:
+        if (frame % this->ap[this->currentAnimation].framesPerStep == 0) {
+            this->currentFrame = (currentFrame + 1) % ap[this->currentAnimation].sequence.size();
+            this->sprite->setTextureCoordinates(this->ap[this->currentAnimation].sequence[currentFrame], 0);
+        }
+
         auto& c = conditionalBehvaiours;
         bool passed = false;
         for (int i = 0; i < this->conditionalBehvaiours.size(); i++) {
@@ -185,6 +197,7 @@ namespace th {
         auto lessthan    = [&](){ if (*dependent < value) return true; return false; };
         auto notequal    = [&](){ if (*dependent != value) return true; return false; };
         auto between     = [&](){ if (*dependent > value && *dependent < value2) return true; return false; };
+        auto equal       = [&](){ if (*dependent == value) return true; return false; };
         std::function<bool()> compareFunction;
         switch (op) {
             case (int)OPERATOR::GREATERTHAN:
@@ -198,6 +211,9 @@ namespace th {
                 break;
             case (int)OPERATOR::BETWEEN:
                 compareFunction = between;
+                break;
+            case (int)OPERATOR::EQUAL:
+                compareFunction = equal;
                 break;
             case (int)OPERATOR::NONE:
                 return true;
@@ -213,6 +229,9 @@ namespace th {
                 break;
             case (int)ACTION::MOVEY:
                 this->position.y += (float)behaviour.value;
+                break;
+            case (int)ACTION::FIRE:
+                this->polledSpell = behaviour.value;
                 break;
             default: break;
         }

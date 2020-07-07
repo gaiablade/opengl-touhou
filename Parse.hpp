@@ -9,7 +9,7 @@
 
 namespace th {
 
-    enum class JSTYPE { Val = 0, Obj = 1 };
+    enum class JSTYPE { Val = 0, Obj = 1, Arr = 2 };
 
     struct jsonObj {
         JSTYPE type;
@@ -57,6 +57,7 @@ namespace th {
 
         private:
         static void ParseObject(std::ifstream& in, jsonObj& obj);
+        static void ParseArray(std::ifstream& in, jsonObj& obj, int index = 0);
         static bool removeChar(char character, std::string& str);
         static bool removeChars(const std::string& chars, std::string& str);
     };
