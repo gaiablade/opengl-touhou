@@ -1,7 +1,7 @@
 INC = -I$(GAIAGL)/ -I$(GAIAGL)/GaiaGL/vendor -I$(IMGUI) -I$(IRRKLANG)/irrKlang/include
 LIB = -L$(GAIAGL)/GaiaGL/ -L$(IRRKLANG)/irrKlang/lib -lgaiagl -lGL -lGLEW -lglfw \
 	$(IRRKLANG)/irrKlang/bin/linux-gcc-64/libIrrKlang.so $(IRRKLANG)/irrKlang/bin/linux-gcc-64/ikpMP3.so -pthread
-OBJ = $(GAIAGL)/GaiaGL/libgaiagl.a Touhou.o Parse.o State.o Menu.o DanmakuTest.o Enemy.o Spell.o
+OBJ = $(GAIAGL)/GaiaGL/libgaiagl.a Touhou.o State.o Menu.o DanmakuTest.o Enemy.o Spell.o
 
 NAME = Touhou
 COMP = g++
@@ -13,19 +13,16 @@ $(NAME): source.cpp $(OBJ)
 Touhou.o: Touhou.cpp Touhou.hpp State.o Menu.o DanmakuTest.o
 	$(COMP) $< -c -o $@ $(INC) $(LIB) $(FLAG)
 
-Parse.o: Parse.cpp Parse.hpp
-	$(COMP) $< -c -o $@ $(INC) $(LIB) $(FLAG)
-
 State.o: State.cpp State.hpp
 	$(COMP) $< -c -o $@ $(INC) $(LIB) $(FLAG)
 
 Menu.o: Menu.cpp Menu.hpp State.o
 	$(COMP) $< -c -o $@ $(INC) $(LIB) $(FLAG)
 
-DanmakuTest.o: DanmakuTest.cpp DanmakuTest.hpp Parse.o Enemy.o Spell.o
+DanmakuTest.o: DanmakuTest.cpp DanmakuTest.hpp Enemy.o Spell.o
 	$(COMP) $< -c -o $@ $(INC) $(LIB) $(FLAG)
 
-Enemy.o: Enemy.cpp Enemy.hpp Spell.o Parse.o
+Enemy.o: Enemy.cpp Enemy.hpp Spell.o
 	$(COMP) $< -c -o $@ $(INC) $(LIB) $(FLAG)
 
 Spell.o: Spell.cpp Spell.hpp

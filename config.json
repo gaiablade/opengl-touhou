@@ -4,5 +4,9 @@
         "width": "800",
         "height": "600"
     },
-    "title": "Touhou X: Venus Paranoia"
+    "title": "Touhou X: Venus Paranoia",
+
+    "level-script": "scripts/level.json",
+    "enemy-script": "scripts/enemy.json",
+    "spell-script": "scripts/spells.json"
 }

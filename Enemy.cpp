@@ -4,7 +4,7 @@ using namespace std::string_literals;
 
 namespace th {
 
-    Enemy::Enemy(jsonObj& obj, std::map<std::string, ga::Texture*>& textures, ga::Size2D windowSize)
+    Enemy::Enemy(ga::jsonObj& obj, std::map<std::string, ga::Texture*>& textures, ga::Size2D windowSize)
         : sprite(nullptr), frame(0)
     {
         if (obj.has("init") && obj["init"].has("appearance") && obj["init"]["appearance"].has("sprite")) {
@@ -70,7 +70,7 @@ namespace th {
     Enemy::~Enemy() {
     }
 
-    void Enemy::compileBehaviours(jsonObj& obj) {
+    void Enemy::compileBehaviours(ga::jsonObj& obj) {
         // Compile loop behaviour
         if (obj.has("loop")) {
             // Conditional Behaviour

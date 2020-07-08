@@ -2,7 +2,6 @@
 #include <array>
 #include <GaiaGL/Graphics.h>
 #include "State.hpp"
-#include "Parse.hpp"
 
 namespace th {
 

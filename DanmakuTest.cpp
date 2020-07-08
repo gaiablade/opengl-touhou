@@ -23,7 +23,7 @@ namespace th {
           bar(ga::Color(1.0f, 0.0f, 0.0f, 1.0f), width / 5, height), window(window)
     {
         this->soundEngine = ik::createIrrKlangDevice();
-        //soundEngine->play2D("assets/music/bucket.ogg", true);
+        soundEngine->play2D("assets/music/bucket.ogg", true);
         this->status = 0;
         this->frame = 0;
         background.setPosition(ga::Position2D<float>(width/2, height/2));
@@ -95,11 +95,11 @@ namespace th {
             { "else"s,        (int)CONDITIONAL::ELSE     }
         };
 
-        auto r = Parser::ParseJSON("scripts/enemy.json").obj;
+        auto r = ga::Parser::ParseJSON("scripts/enemy.json").obj;
         for (auto& obj : r.objs) {
             // Parse each enemy into a set of parameters
             int index = toInt(obj.first);
-            std::string name = obj.second.objs["name"].val;
+            std::string name = obj.second["name"].val;
             this->enemyToInt[name] = index;
 
             /**
@@ -107,18 +107,20 @@ namespace th {
              *      std::vector<Conditional> conditionalBehaviours;
              *      std::vector<Behaviour> staticBehaviours;
              *      ga::Sprite* sprite;
+             *      std::vector<AnimationParams> ap;
+             *      int defaultAnimation;
              *      int x, y;
              * };
              */
             EnemyParams ep;
             if (obj.second.has("init")) {
-                auto& init = obj.second.objs["init"];
+                auto& init = obj.second["init"];
                 if (init.has("appearance")) {
-                    auto& appearance = init.objs["appearance"];
+                    auto& appearance = init["appearance"];
                     if (appearance.has("sprite")) {
                         if (appearance.has("textureRectangle")) {
-                            auto& texCoords = appearance.objs["textureRectangle"];
-                            std::string spriteFile = appearance.objs["sprite"].val;
+                            auto& texCoords = appearance["textureRectangle"];
+                            std::string spriteFile = appearance["sprite"].val;
                             if (textures.find(spriteFile) == textures.end()) {
                                 textures[spriteFile] = new ga::Texture("assets/images/"s + spriteFile);
                             }
@@ -137,8 +139,8 @@ namespace th {
                             if (this->sprites.find(spriteFile) == sprites.end()) {
                                 sprites[spriteFile] = new ga::Sprite(textures[spriteFile], opt);
                                 if (appearance.has("scale")) {
-                                    auto& scale = appearance.objs["scale"];
-                                    sprites[spriteFile]->setScale(ga::Scale2D(scale.objs["width"].toFloat(), scale.objs["height"].toFloat()));
+                                    auto& scale = appearance["scale"];
+                                    sprites[spriteFile]->setScale(ga::Scale2D(scale["width"].toFloat(), scale["height"].toFloat()));
                                 }
                             }
 
@@ -149,8 +151,8 @@ namespace th {
                 }
                 if (init.has("position")) {
                     // X, Y SET HERE
-                    ep.x = init.objs["position"].objs["x"].toInt();
-                    ep.y = init.objs["position"].objs["y"].toInt();
+                    ep.x = init["position"]["x"].toInt();
+                    ep.y = init["position"]["y"].toInt();
                 }
                 if (init.has("animations")) {
                     auto animations = init["animations"].objs;
@@ -181,14 +183,14 @@ namespace th {
                 }
             }
             if (obj.second.has("loop")) {
-                auto& loop = obj.second.objs["loop"];
+                auto& loop = obj.second["loop"];
                 if (loop.has("conditionals")) {
-                    auto& conditionals = loop.objs["conditionals"];
+                    auto& conditionals = loop["conditionals"];
                     for (auto& conditional : conditionals.objs) {
                         int dependence, cond, op, value, value2;
                         std::vector<Behaviour> behaviours;
                         const auto getEnum = [&](const std::string& key, int& storage){
-                            const auto it = enums.find(conditional.second.objs[key].val);
+                            const auto it = enums.find(conditional.second[key].val);
                             if (it != enums.end()) {
                                 storage = it->second;
                             }
@@ -199,10 +201,10 @@ namespace th {
                         getEnum("operator", op);
                         getEnum("conditional", cond);
                         getEnum("dependence", dependence);
-                        value = conditional.second.objs["value"].toInt();
-                        value2 = conditional.second.objs["value2"].toInt();
+                        value = conditional.second["value"].toInt();
+                        value2 = conditional.second["value2"].toInt();
                         if (conditional.second.has("behaviour")) {
-                            auto& behaviour = conditional.second.objs["behaviour"];
+                            auto& behaviour = conditional.second["behaviour"];
                             for (auto& b : behaviour.objs) {
                                 if (b.first.find("moveX") != std::string::npos) {
                                     behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEX, b.second["x"].toInt() });
@@ -228,15 +230,15 @@ namespace th {
     }
 
     void DanmakuTest::compileLevel() {
-        auto spawns = th::Parser::ParseJSON("scripts/level.json").obj;
+        auto spawns = ga::Parser::ParseJSON("scripts/level.json").obj;
         if (spawns.has("enemy_spawns")) {
-            auto& enemy_spawns = spawns.objs["enemy_spawns"];
+            auto& enemy_spawns = spawns["enemy_spawns"];
             for (auto& s : enemy_spawns.objs) {
                 int f = toInt(s.first);
                 std::vector<EnemySpawnInfo> v;
                 for (auto& e : s.second.objs) {
                     v.push_back({
-                        enemyToInt[e.second.objs["enemy"].val], e.second.objs["position"].objs["x"].toInt(), e.second.objs["position"].objs["y"].toInt()
+                        enemyToInt[e.second["enemy"].val], e.second["position"]["x"].toInt(), e.second["position"]["y"].toInt()
                     });
                 }
                 this->enemySpawns[f] = v;
@@ -251,7 +253,7 @@ namespace th {
             { "radial", (int)FORMATION::RADIAL }
         };
         fs::path p = fs::current_path();
-        auto spellsJSON = th::Parser::ParseJSON(p.string() + "/scripts/spells.json"s).obj;
+        auto spellsJSON = ga::Parser::ParseJSON(p.string() + "/scripts/spells.json"s).obj;
         for (auto& spell : spellsJSON.objs) {
             this->spellToInt[spell.second["name"].val] = toInt(spell.first);
             int numBullets    = spell.second["number"].toInt();
@@ -262,8 +264,8 @@ namespace th {
                 auto& appearance = spell.second["appearance"];
                 if (appearance.has("sprite")) {
                     if (appearance.has("textureRectangle")) {
-                        auto& texCoords = appearance.objs["textureRectangle"];
-                        std::string spriteFile = appearance.objs["sprite"].val;
+                        auto& texCoords = appearance["textureRectangle"];
+                        std::string spriteFile = appearance["sprite"].val;
                         int s_left = texCoords["left"].toInt();
                         int s_top = texCoords["top"].toInt();
                         int s_width = texCoords["width"].toInt();
@@ -275,18 +277,18 @@ namespace th {
                             textures[spriteFile] = new ga::Texture("assets/images/"s + spriteFile);
                             sprites[spriteFile] = new ga::Sprite(textures[spriteFile], opt);
                             if (appearance.has("scale")) {
-                                auto& scale = appearance.objs["scale"];
-                                sprites[spriteFile]->setScale(ga::Scale2D(scale.objs["width"].toFloat(), scale.objs["height"].toFloat()));
+                                auto& scale = appearance["scale"];
+                                sprites[spriteFile]->setScale(ga::Scale2D(scale["width"].toFloat(), scale["height"].toFloat()));
                             }
                         }
                     }
                 }
             }
-            std::cout << spell.second["appearance"].objs["sprite"].val << '\n';
+            std::cout << spell.second["appearance"]["sprite"].val << '\n';
             this->spellLibrary[spellToInt[spell.second["name"].val]] = SpellInfo{
                 .name = spell.second["name"].val, .startingPosition = startPosition,
                 .position = ga::Position2D<int>{ 0, 0 }, .formation = formation, .numBullets = numBullets,
-                .speed = speed, .sprite = this->sprites[spell.second["appearance"].objs["sprite"].val], 
+                .speed = speed, .sprite = this->sprites[spell.second["appearance"]["sprite"].val], 
             };
         }
     }

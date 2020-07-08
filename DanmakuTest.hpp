@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <filesystem>
 #include <irrKlang.h>
-#include "Parse.hpp"
 #include "State.hpp"
 #include "Enemy.hpp"
 #include "Spell.hpp"
@@ -38,7 +37,7 @@ namespace th {
         std::vector<Spell> spells;
         std::map<std::string, int> spellToInt;
         std::vector<Enemy*> enemies;
-        jsonObj spellsJSON;
+        ga::jsonObj spellsJSON;
         int frame;
         ga::Window* window;
         ik::ISoundEngine* soundEngine;

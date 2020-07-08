@@ -3,7 +3,6 @@
 #include <stack>
 #include "State.hpp"
 #include "Menu.hpp"
-#include "Parse.hpp"
 #include "DanmakuTest.hpp"
 
 namespace th {

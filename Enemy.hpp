@@ -4,7 +4,7 @@
 #include <map>
 #include <functional>
 #include <GaiaGL/Graphics.h>
-#include "Parse.hpp"
+#include <GaiaGL/System.h>
 #include "Spell.hpp"
 
 namespace th {
@@ -55,11 +55,11 @@ namespace th {
 
     class Enemy {
         public:
-        Enemy(jsonObj& obj, std::map<std::string, ga::Texture*>& textures, ga::Size2D windowSize);
+        Enemy(ga::jsonObj& obj, std::map<std::string, ga::Texture*>& textures, ga::Size2D windowSize);
         Enemy(EnemyParams* params);
         Enemy(const Enemy& old_obj);
         ~Enemy();
-        void compileBehaviours(jsonObj& obj);
+        void compileBehaviours(ga::jsonObj& obj);
         void loop();
         void render(ga::Window& window);
         bool isTrue(int dependence, int condition, int op, int value, int value2 = 0);

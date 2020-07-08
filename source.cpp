@@ -1,11 +1,11 @@
 #include <iostream>
 #include <sstream>
 #include "Touhou.hpp"
-#include "Parse.hpp"
+#include <GaiaGL/System.h>
 
 int main() {
     // Parse config file
-    auto r = th::Parser::ParseJSON("config.json");
+    auto r = ga::Parser::ParseJSON("config.json");
     if (!r.success) {
         std::cout << "Failed to parse config file..." << std::endl;
         return 1;
