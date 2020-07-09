@@ -71,6 +71,21 @@ namespace th {
     }
 
     void Enemy::compileBehaviours(ga::jsonObj& obj) {
+        const static std::unordered_map<std::string, int> enums = {
+            { "none",        (int)DEPEND::NONE          },
+            { "frame",       (int)DEPEND::FRAME         },
+            { "if",          (int)CONDITIONAL::IF       },
+            { "else",        (int)CONDITIONAL::ELSE     },
+            { "elseif",      (int)CONDITIONAL::ELSEIF   },
+            { "moveX",       (int)ACTION::MOVEX         },
+            { "moveY",       (int)ACTION::MOVEY         },
+            { "fire",        (int)ACTION::FIRE          },
+            { "greaterthan", (int)OPERATOR::GREATERTHAN },
+            { "lessthan",    (int)OPERATOR::LESSTHAN    },
+            { "between",     (int)OPERATOR::BETWEEN     },
+            { "equal",       (int)OPERATOR::EQUAL       },
+            { "notequal",    (int)OPERATOR::NOTEQUAL    }
+        };
         // Compile loop behaviour
         if (obj.has("loop")) {
             // Conditional Behaviour
@@ -78,59 +93,65 @@ namespace th {
                 for (auto& c : obj["loop"]["conditionals"].objs) {
                     int dependence, conditional, op, value, value2;
                     std::vector<Behaviour> behaviours;
-                    for (auto& c2 : c.second.objs) {
-                        if (c2.first.find("dependence") != std::string::npos) {
-                            if (c2.second.val.find("frame") != std::string::npos) {
-                                dependence = (int)DEPEND::FRAME;
-                            }
-                            else {
-                                dependence = (int)DEPEND::NONE;
-                            }
+                    if (c.second.has("dependence")) {
+                        auto it = enums.find(c.second["dependence"].val);
+                        if (it != enums.end()) {
+                            dependence = it->second;
                         }
-                        else if (c2.first.find("op") != std::string::npos) {
-                            if (c2.second.val.find("greaterthan") != std::string::npos) {
-                                op = (int)OPERATOR::GREATERTHAN;
-                            }
-                            else if (c2.second.val.find("notequal") != std::string::npos) {
-                                op = (int)OPERATOR::NOTEQUAL;
-                            }
-                            else if (c2.second.val.find("between") != std::string::npos) {
-                                op = (int)OPERATOR::BETWEEN;
-                            }
-                            else {
-                                op = (int)OPERATOR::NONE;
-                            }
+                        else dependence = (int)DEPEND::FRAME;
+                    }
+                    else {
+                        dependence = (int)DEPEND::FRAME;
+                    }
+                    if (c.second.has("op")) {
+                        auto it = enums.find(c.second["op"].val);
+                        if (it != enums.end()) {
+                            op = it->second;
                         }
-                        else if (c2.first.find("value2") != std::string::npos) {
-                            value2 = c2.second.toInt();
-                        }
-                        else if (c2.first.find("value") != std::string::npos) {
-                            value = c2.second.toInt();
-                        }
-                        else if (c2.first.find("behaviour") != std::string::npos) {
-                            for (auto& c3 : c2.second.objs) {
-                                if (c3.first.find("moveX") != std::string::npos) {
-                                    behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEX, c3.second["x"].toInt() });
-                                }
-                                else if (c3.first.find("moveY") != std::string::npos) {
-                                    behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEY, c3.second["y"].toInt() });
-                                }
-                                else if (c3.first.find("fire") != std::string::npos) {
+                        else op = (int)OPERATOR::EQUAL;
+                    }
+                    else {
+                        op = (int)OPERATOR::EQUAL;
+                    }
+                    if (c.second.has("value")) {
+                        value = c.second["value"].toInt();
+                    }
+                    else {
+                        value = 0;
+                    }
+                    if (c.second.has("value2")) {
+                        value2 = c.second["value2"].toInt();
+                    }
+                    else {
+                        value2 = 0;
+                    }
+                    if (c.second.has("behaviour")) {
+                        auto it = enums.find(c.second["behaviour"].val);
+                        if (it != enums.end()) {
+                            switch (it->second) {
+                                case ((int)ACTION::MOVEX):
+                                    behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEX, c.second["behaviour"]["x"].toInt() });
+                                    break;
+                                case ((int)ACTION::MOVEY):
+                                    behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEY, c.second["behaviour"]["y"].toInt() });
+                                    break;
+                                case ((int)ACTION::FIRE):
                                     behaviours.emplace_back(Behaviour{ (int)ACTION::FIRE, 0 });
-                                }
+                                    break;
                             }
                         }
-                        else if (c2.first.find("conditional") != std::string::npos) {
-                            if (c2.second.val.find("elseif") != std::string::npos) {
-                                conditional = (int)CONDITIONAL::ELSEIF;
-                            }
-                            else if (c2.second.val.find("if") != std::string::npos) {
-                                conditional = (int)CONDITIONAL::IF;
-                            }
-                            else if (c2.second.val.find("else") != std::string::npos) {
-                                conditional = (int)CONDITIONAL::ELSE;
-                            }
+                    }
+                    if (c.second.has("conditional")) {
+                        auto it = enums.find(c.second["conditional"].val);
+                        if (it != enums.end()) {
+                            conditional = it->second;
                         }
+                        else {
+                            conditional = (int)CONDITIONAL::IF;
+                        }
+                    }
+                    else {
+                        conditional = (int)CONDITIONAL::IF;
                     }
                     this->conditionalBehvaiours.emplace_back(Conditional{ .dependence = dependence, .conditional = conditional,
                         .op = op, .value = value, .value2 = value2, .behaviours = behaviours });

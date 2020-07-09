@@ -23,7 +23,7 @@ namespace th {
           bar(ga::Color(1.0f, 0.0f, 0.0f, 1.0f), width / 5, height), window(window)
     {
         this->soundEngine = ik::createIrrKlangDevice();
-        soundEngine->play2D("assets/music/bucket.ogg", true);
+        //soundEngine->play2D("assets/music/bucket.ogg", true);
         this->status = 0;
         this->frame = 0;
         background.setPosition(ga::Position2D<float>(width/2, height/2));
@@ -183,43 +183,86 @@ namespace th {
                 }
             }
             if (obj.second.has("loop")) {
-                auto& loop = obj.second["loop"];
-                if (loop.has("conditionals")) {
-                    auto& conditionals = loop["conditionals"];
-                    for (auto& conditional : conditionals.objs) {
-                        int dependence, cond, op, value, value2;
+                if (obj.second["loop"].has("conditionals")) {
+                    for (auto& c : obj.second["loop"]["conditionals"].objs) {
+                        int dependence, conditional, op, value, value2;
                         std::vector<Behaviour> behaviours;
-                        const auto getEnum = [&](const std::string& key, int& storage){
-                            const auto it = enums.find(conditional.second[key].val);
+                        if (c.second.has("dependence")) {
+                            auto it = enums.find(c.second["dependence"].val);
                             if (it != enums.end()) {
-                                storage = it->second;
+                                dependence = it->second;
+                            }
+                            else dependence = (int)DEPEND::FRAME;
+                        }
+                        else {
+                            dependence = (int)DEPEND::FRAME;
+                        }
+                        if (c.second.has("operator")) {
+                            auto it = enums.find(c.second["operator"].val);
+                            if (it != enums.end()) {
+                                op = it->second;
+                            }
+                            else op = (int)OPERATOR::EQUAL;
+                        }
+                        else {
+                            op = (int)OPERATOR::EQUAL;
+                        }
+                        if (c.second.has("value")) {
+                            value = c.second["value"].toInt();
+                        }
+                        else {
+                            value = 0;
+                        }
+                        if (c.second.has("value2")) {
+                            value2 = c.second["value2"].toInt();
+                        }
+                        else {
+                            value2 = 0;
+                        }
+                        if (c.second.has("behaviour")) {
+                            for (auto& behaviour : c.second["behaviour"].objs) {
+                                if (behaviour.first.find("moveX") != std::string::npos) {
+                                    behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEX, behaviour.second["x"].toInt() });
+                                }
+                                else if (behaviour.first.find("moveY") != std::string::npos) {
+                                    behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEY, behaviour.second["y"].toInt() });
+                                }
+                                else if (behaviour.first.find("fire") != std::string::npos) {
+                                    behaviours.emplace_back(Behaviour{ (int)ACTION::FIRE, spellToInt[behaviour.second["spell"].val] });
+                                }
+                            }
+                            /*
+                            auto it = enums.find(c.second["behaviour"].val);
+                            if (it != enums.end()) {
+                                switch (it->second) {
+                                    case ((int)ACTION::MOVEX):
+                                        behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEX, c.second["behaviour"]["x"].toInt() });
+                                        break;
+                                    case ((int)ACTION::MOVEY):
+                                        behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEY, c.second["behaviour"]["y"].toInt() });
+                                        break;
+                                    case ((int)ACTION::FIRE):
+                                        behaviours.emplace_back(Behaviour{ (int)ACTION::FIRE, 0 });
+                                        break;
+                                }
+                            }
+                            */
+                        }
+                        if (c.second.has("conditional")) {
+                            auto it = enums.find(c.second["conditional"].val);
+                            if (it != enums.end()) {
+                                conditional = it->second;
                             }
                             else {
-                                storage = -1;
+                                conditional = (int)CONDITIONAL::IF;
                             }
-                        };
-                        getEnum("operator", op);
-                        getEnum("conditional", cond);
-                        getEnum("dependence", dependence);
-                        value = conditional.second["value"].toInt();
-                        value2 = conditional.second["value2"].toInt();
-                        if (conditional.second.has("behaviour")) {
-                            auto& behaviour = conditional.second["behaviour"];
-                            for (auto& b : behaviour.objs) {
-                                if (b.first.find("moveX") != std::string::npos) {
-                                    behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEX, b.second["x"].toInt() });
-                                }
-                                else if (b.first.find("moveY") != std::string::npos) {
-                                    behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEY, b.second["y"].toInt() });
-                                }
-                                else if (b.first.find("fire") != std::string::npos) {
-                                    behaviours.emplace_back(Behaviour{ (int)ACTION::FIRE, spellToInt[b.second["spell"].val] });
-                                }
-                            }
+                        }
+                        else {
+                            conditional = (int)CONDITIONAL::IF;
                         }
                         // CONDITIONAL BEHAVIOURS SET HERE
                         ep.conditionalBehaviours.emplace_back(Conditional{
-                            .dependence = dependence, .conditional = cond, .op = op,
+                            .dependence = dependence, .conditional = conditional, .op = op,
                             .value = value, .value2 = value2, .behaviours = behaviours,
                         });
                     }
@@ -284,7 +327,6 @@ namespace th {
                     }
                 }
             }
-            std::cout << spell.second["appearance"]["sprite"].val << '\n';
             this->spellLibrary[spellToInt[spell.second["name"].val]] = SpellInfo{
                 .name = spell.second["name"].val, .startingPosition = startPosition,
                 .position = ga::Position2D<int>{ 0, 0 }, .formation = formation, .numBullets = numBullets,

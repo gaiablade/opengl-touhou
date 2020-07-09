@@ -28,6 +28,7 @@ namespace th {
     struct Bullet {
         ga::Vector2<float> direction;
         ga::Position2D<float> position;
+        ga::Rotation2D rotation;
         void update() {
             this->position.x += direction.x;
             this->position.y += direction.y;

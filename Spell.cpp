@@ -30,7 +30,8 @@ namespace th {
                         case (int)POSITION::OWNER:
                             this->bullets.emplace_back(Bullet{
                                 ga::Vector2<float>(cos(i * PI / 180) * si.speed, sin(i * PI / 180) * si.speed),
-                                ga::Position2D<float>(cos(i * PI / 180) + position.x, sin(i * PI / 180) + position.y)
+                                ga::Position2D<float>(cos(i * PI / 180) + position.x, sin(i * PI / 180) + position.y),
+                                ga::Rotation2D(i)
                             });
                             break;
                         case (int)POSITION::CUSTOM:
@@ -51,6 +52,7 @@ namespace th {
     void Spell::render(ga::Window& window) {
         for (auto& bullet : bullets) {
             this->sprite->setPosition(ga::Position2D<float>(bullet.position.x, bullet.position.y));
+            this->sprite->setRotation(bullet.rotation);
             window.getRenderer().Draw(*sprite);
         }
     }

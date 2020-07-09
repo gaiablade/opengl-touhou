@@ -90,8 +90,6 @@
                 },
                 "4": {
                     "dependence": "frame",
-                    "conditional": "if",
-                    "operator": "equal",
                     "value": "62",
                     "behaviour": {
                         "fire": {
@@ -101,9 +99,16 @@
                 },
                 "5": {
                     "dependence": "frame",
-                    "conditional": "if",
-                    "operator": "equal",
                     "value": "230",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "expanding-ring-32"
+                        }
+                    }
+                },
+                "6": {
+                    "dependence": "frame",
+                    "value": "280",
                     "behaviour": {
                         "fire": {
                             "spell": "expanding-ring-32"
@@ -191,8 +196,6 @@
                 },
                 "4": {
                     "dependence": "frame",
-                    "conditional": "if",
-                    "operator": "equal",
                     "value": "200",
                     "behaviour": {
                         "fire": {
@@ -285,7 +288,6 @@
             "conditionals": {
                 "0": {
                     "dependence": "frame",
-                    "conditional": "if",
                     "operator": "notequal",
                     "value": "0",
                     "behaviour": {
