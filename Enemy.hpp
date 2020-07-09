@@ -27,7 +27,8 @@ namespace th {
     };
 
     struct Behaviour {
-        int action, value;
+        int action;
+        std::vector<int> values;
     };
 
     struct Conditional {
@@ -54,6 +55,10 @@ namespace th {
         int index, x, y;
     };
 
+    struct PolledSpell {
+        int spell, rotation;
+    };
+
     class Enemy {
         public:
         Enemy(ga::jsonObj& obj, std::map<std::string, ga::Texture*>& textures, ga::Size2D windowSize);
@@ -71,7 +76,7 @@ namespace th {
         std::vector<Conditional> conditionalBehvaiours;
         std::vector<Behaviour> staticBehaviours;
         ga::Position2D<float> position;
-        int polledSpell = -1;
+        PolledSpell polledSpell = { -1, 0 };
         int passed = 0;
         int currentAnimation = 0;
         std::vector<AnimationParams> ap;

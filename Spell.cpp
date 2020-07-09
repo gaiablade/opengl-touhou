@@ -20,7 +20,7 @@ namespace th {
         */
     }
 
-    Spell::Spell(SpellInfo& si, const ga::Position2D<float>& position) {
+    Spell::Spell(SpellInfo& si, const ga::Position2D<float>& position, const int& rotation) {
         lifetime = 0;
         this->sprite = si.sprite;
         this->bullets.reserve(si.numBullets);
@@ -31,9 +31,9 @@ namespace th {
                     switch (si.startingPosition) {
                         case (int)POSITION::OWNER:
                             this->bullets.emplace_back(Bullet{
-                                ga::Vector2<float>(cos(i * PI / 180) * si.speed, sin(i * PI / 180) * si.speed),
-                                ga::Position2D<float>(cos(i * PI / 180) + position.x, sin(i * PI / 180) + position.y),
-                                ga::Rotation2D(i),
+                                ga::Vector2<float>(cos((i + rotation) * PI / 180) * si.speed, sin((i + rotation) * PI / 180) * si.speed),
+                                ga::Position2D<float>(cos((i + rotation) * PI / 180) + position.x, sin((i + rotation) * PI / 180) + position.y),
+                                ga::Rotation2D(i + rotation),
                                 ga::Collider(ga::ColliderOpt{10.0f, 10.0f})
                             });
                             this->bullets.back().coll.setRotation(bullets.back().rotation);

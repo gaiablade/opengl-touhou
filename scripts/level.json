@@ -8,13 +8,6 @@
                     "y": "0"
                 }
             },
-            "1": {
-                "enemy": "red_orb2",
-                "position": {
-                    "x": "200",
-                    "y": "0"
-                }
-            },
             "2": {
                 "enemy": "shroom",
                 "position": {
@@ -36,7 +29,7 @@
             "0": {
                 "enemy": "red_orb",
                 "position": {
-                    "x": "100",
+                    "x": "200",
                     "y": "0"
                 }
             }

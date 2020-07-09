@@ -71,6 +71,7 @@ namespace th {
     }
 
     void Enemy::compileBehaviours(ga::jsonObj& obj) {
+        /*
         const static std::unordered_map<std::string, int> enums = {
             { "none",        (int)DEPEND::NONE          },
             { "frame",       (int)DEPEND::FRAME         },
@@ -158,6 +159,7 @@ namespace th {
                 }
             }
         }
+        */
     }
 
     void Enemy::loop() {
@@ -246,13 +248,14 @@ namespace th {
     void Enemy::perform(Behaviour& behaviour) {
         switch (behaviour.action) {
             case (int)ACTION::MOVEX:
-                this->position.x += (float)behaviour.value;
+                this->position.x += (float)behaviour.values[0];
                 break;
             case (int)ACTION::MOVEY:
-                this->position.y += (float)behaviour.value;
+                this->position.y += (float)behaviour.values[0];
                 break;
             case (int)ACTION::FIRE:
-                this->polledSpell = behaviour.value;
+                this->polledSpell.spell = behaviour.values[0];
+                this->polledSpell.rotation = behaviour.values[1];
                 break;
             default: break;
         }

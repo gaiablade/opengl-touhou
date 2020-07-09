@@ -40,7 +40,7 @@ namespace th {
     class Spell {
         public:
         Spell(ga::Sprite* sprite);
-        Spell(SpellInfo& si, const ga::Position2D<float>& position);
+        Spell(SpellInfo& si, const ga::Position2D<float>& position, const int& rotation = 0);
         void update();
         void render(ga::Window& window);
 

@@ -63,14 +63,14 @@
                     "dependence": "frame",
                     "conditional": "elseif",
                     "operator": "between",
-                    "value": "300",
-                    "value2": "400",
+                    "value": "241",
+                    "value2": "600",
                     "behaviour": {
                         "moveX": {
-                            "x": "-2"
+                            "x": "0"
                         },
                         "moveY": {
-                            "y": "-2"
+                            "y": "0"
                         }
                     }
                 },
@@ -93,7 +93,7 @@
                     "value": "62",
                     "behaviour": {
                         "fire": {
-                            "spell": "expanding-ring-8"
+                            "spell": "expanding-ring-32"
                         }
                     }
                 },
@@ -111,7 +111,18 @@
                     "value": "280",
                     "behaviour": {
                         "fire": {
-                            "spell": "expanding-ring-32"
+                            "spell": "expanding-ring-32",
+                            "rotate": "30"
+                        }
+                    }
+                },
+                "7": {
+                    "dependence": "frame",
+                    "value": "310",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "expanding-ring-32",
+                            "rotate": "60"
                         }
                     }
                 }

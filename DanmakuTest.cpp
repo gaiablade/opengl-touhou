@@ -62,6 +62,8 @@ namespace th {
     }
 
     void DanmakuTest::update(ga::Window& window) {
+        updateInput();
+        player.update();
         const auto it = enemySpawns.find(frame);
         // Spawn enemies
         if (it != enemySpawns.end()) {
@@ -74,9 +76,9 @@ namespace th {
         // Cast spells
         for (auto& e : enemies) {
             e->loop();
-            if (e->polledSpell != -1) {
-                this->spells.emplace_back(Spell(this->spellLibrary[e->polledSpell], e->position));
-                e->polledSpell = -1;
+            if (e->polledSpell.spell != -1) {
+                this->spells.emplace_back(Spell(this->spellLibrary[e->polledSpell.spell], e->position, e->polledSpell.rotation));
+                e->polledSpell.spell = -1;
             }
         }
         // Update spells
@@ -92,6 +94,27 @@ namespace th {
             }
         }
         frame++;
+    }
+
+    void DanmakuTest::updateInput() {
+        bool keys[] = {
+            ga::Input::IsKeyPressed(GA_KEY_LEFT, *this->window),
+            ga::Input::IsKeyPressed(GA_KEY_RIGHT, *this->window),
+            ga::Input::IsKeyPressed(GA_KEY_DOWN, *this->window),
+            ga::Input::IsKeyPressed(GA_KEY_UP, *this->window)
+        };
+        if (keys[0]) {
+            this->player.position.x -= 2;
+        }
+        if (keys[1]) {
+            this->player.position.x += 2;
+        }
+        if (keys[2]) {
+            this->player.position.y += 2;
+        }
+        if (keys[3]) {
+            this->player.position.y -= 2;
+        }
     }
 
     void DanmakuTest::compileEnemies() {
@@ -232,13 +255,18 @@ namespace th {
                     if (condition.has("behaviour")) {
                         for (auto& [key, behaviour] : condition["behaviour"].objs) {
                             if (key.find("moveX") != std::string::npos) {
-                                behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEX, behaviour["x"].toInt() });
+                                behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEX, { behaviour["x"].toInt() }});
                             }
                             else if (key.find("moveY") != std::string::npos) {
-                                behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEY, behaviour["y"].toInt() });
+                                behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEY, { behaviour["y"].toInt() }});
                             }
                             else if (key.find("fire") != std::string::npos) {
-                                behaviours.emplace_back(Behaviour{ (int)ACTION::FIRE, spellToInt[behaviour["spell"].val] });
+                                if (behaviour.has("rotate")) {
+                                    behaviours.emplace_back(Behaviour{ (int)ACTION::FIRE, { spellToInt[behaviour["spell"].val], behaviour["rotate"].toInt() }});
+                                }
+                                else {
+                                    behaviours.emplace_back(Behaviour{ (int)ACTION::FIRE, { spellToInt[behaviour["spell"].val], 0 }});
+                                }
                             }
                         }
                     }
@@ -345,6 +373,6 @@ namespace th {
         }
         this->player.position      = ga::Position2D<float>(400.0f, 400.0f);
         this->player.coll.position = player.position;
-        this->player.coll.setRotation(ga::Rotation2D(0.1));
+        this->player.coll.setRotation(ga::Rotation2D(0));
     }
 }

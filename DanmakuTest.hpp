@@ -22,6 +22,7 @@ namespace th {
         ~DanmakuTest();
         void render(ga::Window& window) override;
         void update(ga::Window& window) override;
+        void updateInput();
 
         void compileEnemies();
         void compileLevel();
