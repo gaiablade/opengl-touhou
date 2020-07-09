@@ -86,9 +86,6 @@ namespace th {
         // Check collisions
         for (auto& spell : this->spells) {
             for (auto& bullet : spell.bullets) {
-                //if (this->player.coll.isColliding(bullet.coll)) {
-                //std::cout << bullet.position.x << " " << bullet.position.y << " " << player.position.x << " " << player.position.y << '\n';
-                //std::cout << bullet.coll.position.x << " " << bullet.coll.position.y << " " << player.coll.position.x << " " << player.coll.position.y << '\n';
                 if (player.coll.isColliding(bullet.coll)) {
                     player.sprite->setColor(ga::Color(0.0f, 1.0f, 1.0f, 1.0f));
                 }
@@ -112,176 +109,156 @@ namespace th {
         };
 
         auto r = ga::Parser::ParseJSON("scripts/enemy.json").obj;
-        for (auto& obj : r.objs) {
+        //for (auto& obj : r.objs) {
+        for (auto& [key, obj] : r.objs) {
             // Parse each enemy into a set of parameters
-            int index = toInt(obj.first);
-            std::string name = obj.second["name"].val;
+            int index = toInt(key);
+            std::string name = obj["name"].val;
             this->enemyToInt[name] = index;
 
-            /**
-             * EnemyParams {
-             *      std::vector<Conditional> conditionalBehaviours;
-             *      std::vector<Behaviour> staticBehaviours;
-             *      ga::Sprite* sprite;
-             *      std::vector<AnimationParams> ap;
-             *      int defaultAnimation;
-             *      int x, y;
-             * };
-             */
             EnemyParams ep;
-            if (obj.second.has("init")) {
-                auto& init = obj.second["init"];
-                if (init.has("appearance")) {
-                    auto& appearance = init["appearance"];
-                    if (appearance.has("sprite")) {
-                        if (appearance.has("textureRectangle")) {
-                            auto& texCoords = appearance["textureRectangle"];
-                            std::string spriteFile = appearance["sprite"].val;
-                            if (textures.find(spriteFile) == textures.end()) {
-                                textures[spriteFile] = new ga::Texture("assets/images/"s + spriteFile);
+            if (obj.has("init") && obj["init"].has("appearance")) {
+                auto& appearance = obj["init"]["appearance"];
+                if (appearance.has("sprite")) {
+                    std::string spriteFile = appearance["sprite"].val;
+                    if (appearance.has("textureRectangle")) {
+                        auto& texCoords = appearance["textureRectangle"];
+                        if (textures.find(spriteFile) == textures.end()) {
+                            textures[spriteFile] = new ga::Texture("assets/images/"s + spriteFile);
+                        }
+                        int textureWidth  = textures[spriteFile]->getWidth();
+                        int textureHeight = textures[spriteFile]->getHeight();
+                        int s_left        = texCoords["left"].toInt();
+                        int s_top         = texCoords["top"].toInt();
+                        int s_width       = texCoords["width"].toInt();
+                        int s_height      = texCoords["height"].toInt();
+                        int nRows         = textureHeight / s_height;
+                        int nColumns      = textureWidth  / s_width;
+                        ga::AnimationOptions opt {
+                            .nFrames = nRows * nColumns, .nRows = nRows, .nColumns = nColumns,
+                            .spriteWidth = s_width, .spriteHeight = s_height
+                        };
+                        if (this->sprites.find(spriteFile) == sprites.end()) {
+                            sprites[spriteFile] = new ga::Sprite(textures[spriteFile], opt);
+                            if (appearance.has("scale")) {
+                                auto& scale = appearance["scale"];
+                                sprites[spriteFile]->setScale(ga::Scale2D(scale["width"].toFloat(), scale["height"].toFloat()));
                             }
-                            int textureWidth  = textures[spriteFile]->getWidth();
-                            int textureHeight = textures[spriteFile]->getHeight();
-                            int s_left        = texCoords["left"].toInt();
-                            int s_top         = texCoords["top"].toInt();
-                            int s_width       = texCoords["width"].toInt();
-                            int s_height      = texCoords["height"].toInt();
-                            int nRows         = textureHeight / s_height;
-                            int nColumns      = textureWidth  / s_width;
-                            ga::AnimationOptions opt {
-                                .nFrames = nRows * nColumns, .nRows = nRows, .nColumns = nColumns,
-                                .spriteWidth = s_width, .spriteHeight = s_height
-                            };
-                            if (this->sprites.find(spriteFile) == sprites.end()) {
-                                sprites[spriteFile] = new ga::Sprite(textures[spriteFile], opt);
-                                if (appearance.has("scale")) {
-                                    auto& scale = appearance["scale"];
-                                    sprites[spriteFile]->setScale(ga::Scale2D(scale["width"].toFloat(), scale["height"].toFloat()));
-                                }
-                            }
+                        }
 
-                            // SPRITE SET HERE
-                            ep.sprite = sprites[spriteFile];
-                        }
-                    }
-                }
-                if (init.has("position")) {
-                    // X, Y SET HERE
-                    ep.x = init["position"]["x"].toInt();
-                    ep.y = init["position"]["y"].toInt();
-                }
-                if (init.has("animations")) {
-                    auto animations = init["animations"].objs;
-                    std::vector<AnimationParams> ap;
-                    for (auto& animation : animations) {
-                        int framesPerStep = animation.second["framesPerStep"].toInt();
-                        std::vector<int> sequence;
-                        for (auto& step : animation.second["path"].objs) {
-                            sequence.push_back(step.second.toInt());
-                        }
-                        ap.push_back(AnimationParams{
-                            .sequence = sequence, .framesPerStep = framesPerStep
-                        });
-                    }
-                    ep.ap = ap;
-                    if (init.has("defaultAnimation")) {
-                        ep.defaultAnimation = init["defaultAnimation"].toInt();
+                        // SPRITE SET HERE
+                        ep.sprite = sprites[spriteFile];
                     }
                     else {
-                        ep.defaultAnimation = 0;
+                        if (textures.find(spriteFile) == textures.end()) {
+                            textures[spriteFile] = new ga::Texture("assets/images/"s + spriteFile);
+                            sprites[spriteFile]  = new ga::Sprite(textures[spriteFile]);
+                        }
                     }
                 }
                 else {
-                    std::vector<AnimationParams> ap = {
-                        { .sequence = { 0 }, .framesPerStep = 1 }
-                    };
-                    ep.ap = ap;
+                    std::cout << "Enemy at index " << index << " has no defined texture/sprite!\n";
+                    exit(1);
                 }
             }
-            if (obj.second.has("loop")) {
-                if (obj.second["loop"].has("conditionals")) {
-                    for (auto& c : obj.second["loop"]["conditionals"].objs) {
-                        int dependence, conditional, op, value, value2;
-                        std::vector<Behaviour> behaviours;
-                        if (c.second.has("dependence")) {
-                            auto it = enums.find(c.second["dependence"].val);
-                            if (it != enums.end()) {
-                                dependence = it->second;
+            if (obj.has("init") && obj["init"].has("position")) {
+                // X, Y SET HERE
+                ep.x = obj["init"]["position"]["x"].toInt();
+                ep.y = obj["init"]["position"]["y"].toInt();
+            }
+            if (obj.has("init") && obj["init"].has("animations")) {
+                auto animations = obj["init"]["animations"].objs;
+                std::vector<AnimationParams> ap;
+                for (auto& animation : animations) {
+                    int framesPerStep = animation.second["framesPerStep"].toInt();
+                    std::vector<int> sequence;
+                    for (auto& step : animation.second["path"].objs) {
+                        sequence.push_back(step.second.toInt());
+                    }
+                    ap.push_back(AnimationParams{
+                        .sequence = sequence, .framesPerStep = framesPerStep
+                    });
+                }
+                ep.ap = ap;
+                if (obj["init"].has("defaultAnimation")) {
+                    ep.defaultAnimation = obj["init"]["defaultAnimation"].toInt();
+                }
+                else {
+                    ep.defaultAnimation = 0;
+                }
+            }
+            else {
+                std::vector<AnimationParams> ap = {
+                    { .sequence = { 0 }, .framesPerStep = 1 }
+                };
+                ep.ap = ap;
+            }
+            if (obj.has("loop") && obj["loop"].has("conditionals")) {
+                for (auto& [key, condition] : obj["loop"]["conditionals"].objs) {
+                    int dependence, conditional, op, value, value2;
+                    std::vector<Behaviour> behaviours;
+                    if (condition.has("dependence")) {
+                        auto it = enums.find(condition["dependence"].val);
+                        if (it != enums.end()) {
+                            dependence = it->second;
+                        }
+                        else dependence = (int)DEPEND::FRAME;
+                    }
+                    else {
+                        dependence = (int)DEPEND::FRAME;
+                    }
+                    if (condition.has("operator")) {
+                        auto it = enums.find(condition["operator"].val);
+                        if (it != enums.end()) {
+                            op = it->second;
+                        }
+                        else op = (int)OPERATOR::EQUAL;
+                    }
+                    else {
+                        op = (int)OPERATOR::EQUAL;
+                    }
+                    if (condition.has("value")) {
+                        value = condition["value"].toInt();
+                    }
+                    else {
+                        value = 0;
+                    }
+                    if (condition.has("value2")) {
+                        value2 = condition["value2"].toInt();
+                    }
+                    else {
+                        value2 = 0;
+                    }
+                    if (condition.has("behaviour")) {
+                        for (auto& [key, behaviour] : condition["behaviour"].objs) {
+                            if (key.find("moveX") != std::string::npos) {
+                                behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEX, behaviour["x"].toInt() });
                             }
-                            else dependence = (int)DEPEND::FRAME;
-                        }
-                        else {
-                            dependence = (int)DEPEND::FRAME;
-                        }
-                        if (c.second.has("operator")) {
-                            auto it = enums.find(c.second["operator"].val);
-                            if (it != enums.end()) {
-                                op = it->second;
+                            else if (key.find("moveY") != std::string::npos) {
+                                behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEY, behaviour["y"].toInt() });
                             }
-                            else op = (int)OPERATOR::EQUAL;
-                        }
-                        else {
-                            op = (int)OPERATOR::EQUAL;
-                        }
-                        if (c.second.has("value")) {
-                            value = c.second["value"].toInt();
-                        }
-                        else {
-                            value = 0;
-                        }
-                        if (c.second.has("value2")) {
-                            value2 = c.second["value2"].toInt();
-                        }
-                        else {
-                            value2 = 0;
-                        }
-                        if (c.second.has("behaviour")) {
-                            for (auto& behaviour : c.second["behaviour"].objs) {
-                                if (behaviour.first.find("moveX") != std::string::npos) {
-                                    behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEX, behaviour.second["x"].toInt() });
-                                }
-                                else if (behaviour.first.find("moveY") != std::string::npos) {
-                                    behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEY, behaviour.second["y"].toInt() });
-                                }
-                                else if (behaviour.first.find("fire") != std::string::npos) {
-                                    behaviours.emplace_back(Behaviour{ (int)ACTION::FIRE, spellToInt[behaviour.second["spell"].val] });
-                                }
+                            else if (key.find("fire") != std::string::npos) {
+                                behaviours.emplace_back(Behaviour{ (int)ACTION::FIRE, spellToInt[behaviour["spell"].val] });
                             }
-                            /*
-                            auto it = enums.find(c.second["behaviour"].val);
-                            if (it != enums.end()) {
-                                switch (it->second) {
-                                    case ((int)ACTION::MOVEX):
-                                        behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEX, c.second["behaviour"]["x"].toInt() });
-                                        break;
-                                    case ((int)ACTION::MOVEY):
-                                        behaviours.emplace_back(Behaviour{ (int)ACTION::MOVEY, c.second["behaviour"]["y"].toInt() });
-                                        break;
-                                    case ((int)ACTION::FIRE):
-                                        behaviours.emplace_back(Behaviour{ (int)ACTION::FIRE, 0 });
-                                        break;
-                                }
-                            }
-                            */
                         }
-                        if (c.second.has("conditional")) {
-                            auto it = enums.find(c.second["conditional"].val);
-                            if (it != enums.end()) {
-                                conditional = it->second;
-                            }
-                            else {
-                                conditional = (int)CONDITIONAL::IF;
-                            }
+                    }
+                    if (condition.has("conditional")) {
+                        auto it = enums.find(condition["conditional"].val);
+                        if (it != enums.end()) {
+                            conditional = it->second;
                         }
                         else {
                             conditional = (int)CONDITIONAL::IF;
                         }
-                        // CONDITIONAL BEHAVIOURS SET HERE
-                        ep.conditionalBehaviours.emplace_back(Conditional{
-                            .dependence = dependence, .conditional = conditional, .op = op,
-                            .value = value, .value2 = value2, .behaviours = behaviours,
-                        });
                     }
+                    else {
+                        conditional = (int)CONDITIONAL::IF;
+                    }
+                    // CONDITIONAL BEHAVIOURS SET HERE
+                    ep.conditionalBehaviours.emplace_back(Conditional{
+                        .dependence = dependence, .conditional = conditional, .op = op,
+                        .value = value, .value2 = value2, .behaviours = behaviours,
+                    });
                 }
             }
             this->enemyParams[index] = ep;
