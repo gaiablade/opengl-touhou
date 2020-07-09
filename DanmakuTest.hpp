@@ -9,6 +9,7 @@
 #include "State.hpp"
 #include "Enemy.hpp"
 #include "Spell.hpp"
+#include "Player.hpp"
 
 namespace ik = irrklang;
 
@@ -25,7 +26,10 @@ namespace th {
         void compileEnemies();
         void compileLevel();
         void compileSpells();
+        void compilePlayer();
+
         private:
+        Player player;
         ga::ColorRect background;
         ga::ColorRect bar;
         std::map<std::string, ga::Texture*> textures;

@@ -38,5 +38,25 @@
         },
         "formation": "radial",
         "speed": "3"
+    },
+    "2": {
+        "appearance": {
+            "sprite": "red_arrow.png",
+            "textureRectangle": {
+                "left": "0",
+                "top": "0",
+                "width": "10",
+                "height": "10"
+            }
+        },
+        "name": "single",
+        "number": "1",
+        "startPosition": "owner",
+        "trajectory": {
+            "0": "straight",
+            "1": "awayFromOwner"
+        },
+        "formation": "radial",
+        "speed": "3"
     }
 }

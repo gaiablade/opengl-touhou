@@ -1,0 +1,10 @@
+{
+    "name": "marisa",
+    "appearance": {
+        "sprite": "marisa.png",
+        "scale": {
+            "width": "0.2",
+            "height": "0.2"
+        }
+    }
+}

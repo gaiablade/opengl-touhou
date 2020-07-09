@@ -29,9 +29,11 @@ namespace th {
         ga::Vector2<float> direction;
         ga::Position2D<float> position;
         ga::Rotation2D rotation;
+        ga::Collider coll;
         void update() {
             this->position.x += direction.x;
             this->position.y += direction.y;
+            this->coll.setPosition(this->position);
         }
     };
 

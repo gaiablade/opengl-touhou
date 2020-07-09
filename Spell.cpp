@@ -9,6 +9,7 @@ namespace th {
         lifetime = 0;
         this->bullets.reserve(numBullet);
         const float angle = 360.0f / numBullet;
+        /*
         for (float i = 0; i < 360.; i += angle) {
             this->bullets.emplace_back(Bullet{
                 ga::Vector2<float>(cos(i * PI / 180) * speed, sin(i * PI / 180) * speed),
@@ -16,6 +17,7 @@ namespace th {
             });
         }
         std::cout << bullets.capacity() << ' ' << bullets.size() << std::endl;
+        */
     }
 
     Spell::Spell(SpellInfo& si, const ga::Position2D<float>& position) {
@@ -31,8 +33,10 @@ namespace th {
                             this->bullets.emplace_back(Bullet{
                                 ga::Vector2<float>(cos(i * PI / 180) * si.speed, sin(i * PI / 180) * si.speed),
                                 ga::Position2D<float>(cos(i * PI / 180) + position.x, sin(i * PI / 180) + position.y),
-                                ga::Rotation2D(i)
+                                ga::Rotation2D(i),
+                                ga::Collider(ga::ColliderOpt{10.0f, 10.0f})
                             });
+                            this->bullets.back().coll.setRotation(bullets.back().rotation);
                             break;
                         case (int)POSITION::CUSTOM:
                             break;

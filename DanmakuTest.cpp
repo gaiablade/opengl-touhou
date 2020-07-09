@@ -32,6 +32,7 @@ namespace th {
         compileSpells();
         compileEnemies();
         compileLevel();
+        compilePlayer();
     }
 
     DanmakuTest::~DanmakuTest() {
@@ -56,11 +57,13 @@ namespace th {
         for (auto& s : this->spells) {
             s.render(window);
         }
+        this->player.render(window);
         window.getRenderer().Draw(bar);
     }
 
     void DanmakuTest::update(ga::Window& window) {
         const auto it = enemySpawns.find(frame);
+        // Spawn enemies
         if (it != enemySpawns.end()) {
             for (auto e : it->second) {
                 this->enemies.push_back(new Enemy(&this->enemyParams[e.index]));
@@ -68,6 +71,7 @@ namespace th {
                 this->enemies.back()->position.y = e.y;
             }
         }
+        // Cast spells
         for (auto& e : enemies) {
             e->loop();
             if (e->polledSpell != -1) {
@@ -75,8 +79,20 @@ namespace th {
                 e->polledSpell = -1;
             }
         }
+        // Update spells
         for (auto& s : spells) {
             s.update();
+        }
+        // Check collisions
+        for (auto& spell : this->spells) {
+            for (auto& bullet : spell.bullets) {
+                //if (this->player.coll.isColliding(bullet.coll)) {
+                //std::cout << bullet.position.x << " " << bullet.position.y << " " << player.position.x << " " << player.position.y << '\n';
+                //std::cout << bullet.coll.position.x << " " << bullet.coll.position.y << " " << player.coll.position.x << " " << player.coll.position.y << '\n';
+                if (player.coll.isColliding(bullet.coll)) {
+                    player.sprite->setColor(ga::Color(0.0f, 1.0f, 1.0f, 1.0f));
+                }
+            }
         }
         frame++;
     }
@@ -333,5 +349,25 @@ namespace th {
                 .speed = speed, .sprite = this->sprites[spell.second["appearance"]["sprite"].val], 
             };
         }
+    }
+
+    void DanmakuTest::compilePlayer() {
+        auto playerObj = ga::Parser::ParseJSON("scripts/player.json").obj;
+        if (playerObj.has("appearance")) {
+            if (playerObj["appearance"].has("sprite")) {
+                const std::string filepath = playerObj["appearance"]["sprite"].val;
+                if (this->textures.find(filepath) == textures.end()) {
+                    textures[filepath] = new ga::Texture("assets/images/"s + filepath);
+                    sprites[filepath]  = new ga::Sprite(textures[filepath]);
+                }
+                this->player.sprite = sprites[filepath];
+                if (playerObj["appearance"].has("scale")) {
+                    this->player.sprite->setScale(ga::Scale2D(playerObj["appearance"]["scale"]["width"].toFloat(), playerObj["appearance"]["scale"]["height"].toFloat()));
+                }
+            }
+        }
+        this->player.position      = ga::Position2D<float>(400.0f, 400.0f);
+        this->player.coll.position = player.position;
+        this->player.coll.setRotation(ga::Rotation2D(0.1));
     }
 }

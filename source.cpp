@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include "Touhou.hpp"
+#include <GaiaGL/Graphics.h>
 #include <GaiaGL/System.h>
 
 int main() {

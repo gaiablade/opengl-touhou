@@ -8,5 +8,6 @@
 
     "level-script": "scripts/level.json",
     "enemy-script": "scripts/enemy.json",
-    "spell-script": "scripts/spells.json"
+    "spell-script": "scripts/spells.json",
+    "player-script": "scripts/player.json"
 }

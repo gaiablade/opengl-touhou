@@ -1,0 +1,44 @@
+{
+    "0": {
+        "name": "red_orb",
+        "init": {
+            "position": {
+                "x": "200",
+                "y": "0"
+            },
+            "appearance": {
+                "sprite": "blue_angel.png",
+                "textureRectangle": {
+                    "width": "32",
+                    "height": "38"
+                },
+                "scale": {
+                    "width": "1.5625",
+                    "height": "1.5625"
+                }
+            },
+            "animations": [
+                {
+                    "framesPerStep": "25",
+                    "path": [
+                        "6", "7", "5", "4", "5", "7"
+                    ]
+                }
+            ],
+            "defaultAnimation": "0"
+        },
+        "loop": {
+            "conditionals": {
+                "0": {
+                    "dependence": "frame",
+                    "value": "10",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "single"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
