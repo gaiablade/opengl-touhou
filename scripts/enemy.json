@@ -125,6 +125,26 @@
                             "rotate": "60"
                         }
                     }
+                },
+                "8": {
+                    "dependence": "frame",
+                    "value": "311",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "expanding-ring-32",
+                            "rotate": "60"
+                        }
+                    }
+                },
+                "9": {
+                    "dependence": "frame",
+                    "value": "312",
+                    "behaviour": {
+                        "fire": {
+                            "spell": "expanding-ring-32",
+                            "rotate": "60"
+                        }
+                    }
                 }
             }
         }

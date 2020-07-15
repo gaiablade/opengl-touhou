@@ -93,6 +93,9 @@ namespace th {
                 }
             }
         }
+        spells.remove_if([&](const Spell& spell) {
+            return spell.empty;
+        });
         frame++;
     }
 
@@ -312,9 +315,10 @@ namespace th {
 
     void DanmakuTest::compileSpells() {
         const static std::unordered_map<std::string, int> enums = {
-            { "none",   (int)POSITION::NONE    },
-            { "owner",  (int)POSITION::OWNER   },
-            { "radial", (int)FORMATION::RADIAL }
+            { "none",      (int)POSITION::NONE    },
+            { "owner",     (int)POSITION::OWNER   },
+            { "radial",    (int)FORMATION::RADIAL },
+            { "whirlpool", (int)FORMATION::WHIRLPOOL }
         };
         fs::path p = fs::current_path();
         auto spellsJSON = ga::Parser::ParseJSON(p.string() + "/scripts/spells.json"s).obj;

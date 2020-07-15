@@ -1,8 +1,5 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <map>
-#include <unordered_map>
+#include "pch.h"
 #include <functional>
 #include <GaiaGL/Graphics.h>
 #include <GaiaGL/System.h>

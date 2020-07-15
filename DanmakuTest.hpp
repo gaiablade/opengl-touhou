@@ -1,9 +1,5 @@
 #pragma once
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <map>
-#include <unordered_map>
+#include "pch.h"
 #include <filesystem>
 #include <irrKlang.h>
 #include "State.hpp"
@@ -39,7 +35,8 @@ namespace th {
         std::map<int, EnemyParams> enemyParams;
         std::map<std::string, int> enemyToInt;
         std::map<int, SpellInfo> spellLibrary;
-        std::vector<Spell> spells;
+        //std::vector<Spell> spells;
+        std::list<Spell> spells;
         std::map<std::string, int> spellToInt;
         std::vector<Enemy*> enemies;
         ga::jsonObj spellsJSON;

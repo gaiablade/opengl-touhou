@@ -1,7 +1,5 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <cmath>
+#include "pch.h"
 #include <GaiaGL/Graphics.h>
 #include <GaiaGL/System.h>
 
@@ -12,7 +10,7 @@ namespace th {
     };
 
     enum class FORMATION {
-        NONE = 0, RADIAL
+        NONE = 0, RADIAL, WHIRLPOOL
     };
 
     struct SpellInfo {
@@ -26,15 +24,22 @@ namespace th {
     };
 
     struct Bullet {
-        ga::Vector2<float> direction;
         ga::Position2D<float> position;
+        union {
+            ga::Position2D<float> center;
+        };
+        union {
+            ga::Vector2<float> direction;
+            float speed;
+        };
         ga::Rotation2D rotation;
+        //ga::Vector2<float> direction;
+        //ga::Position2D<float> position;
+        //ga::Rotation2D rotation;
         ga::Collider coll;
-        void update() {
-            this->position.x += direction.x;
-            this->position.y += direction.y;
-            this->coll.setPosition(this->position);
-        }
+        bool OOB;
+        int lifetime = 0;
+        //void update(ga::Position2D<float>& spellPosition);
     };
 
     class Spell {
@@ -44,9 +49,12 @@ namespace th {
         void update();
         void render(ga::Window& window);
 
-        std::vector<Bullet> bullets;
+        int formation;
+        std::list<Bullet> bullets;
         ga::Sprite* sprite;
+        ga::Position2D<float> position;
         double lifetime;
+        bool empty;
     };
 
 }

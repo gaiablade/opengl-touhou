@@ -5,10 +5,10 @@ OBJ = $(GAIAGL)/GaiaGL/libgaiagl.a Touhou.o State.o Menu.o DanmakuTest.o Enemy.o
 
 NAME = Touhou
 COMP = g++
-FLAG = -std=c++17 -Wall #-ggdb -fsanitize=address -fno-omit-frame-pointer -fsanitize=leak
+FLAG = -std=c++2a -Wall #-ggdb -fsanitize=address -fno-omit-frame-pointer -fsanitize=leak
 
-$(NAME): source.cpp $(OBJ)
-	$(COMP) $^ -o $@ $(INC) $(LIB) $(FLAG)
+$(NAME): source.cpp $(OBJ) pch.h.gch
+	$(COMP) source.cpp $(OBJ) -o $@ $(INC) $(LIB) $(FLAG)
 
 Touhou.o: Touhou.cpp Touhou.hpp State.o Menu.o DanmakuTest.o
 	$(COMP) $< -c -o $@ $(INC) $(LIB) $(FLAG)
@@ -30,6 +30,9 @@ Spell.o: Spell.cpp Spell.hpp
 
 Player.o: Player.cpp Player.hpp
 	$(COMP) $< -c -o $@ $(INC) $(LIB) $(FLAG)
+
+pch.h.gch: pch.h
+	$(COMP) -c $^ -o $@
 
 clean:
 	rm *.o $(NAME)
