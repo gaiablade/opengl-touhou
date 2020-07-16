@@ -18,20 +18,6 @@ void mov_whirlpool(th::Bullet& bullet) {
 
 namespace th {
 
-    Spell::Spell(ga::Sprite* sprite) : sprite(sprite) {
-        lifetime = 0;
-        const float angle = 360.0f / numBullet;
-        /*
-        for (float i = 0; i < 360.; i += angle) {
-            this->bullets.emplace_back(Bullet{
-                ga::Vector2<float>(cos(i * PI / 180) * speed, sin(i * PI / 180) * speed),
-                ga::Position2D<float>(cos(i * PI / 180) * 5 + 300, sin(i * PI / 180) * 5 + 300)
-            });
-        }
-        std::cout << bullets.capacity() << ' ' << bullets.size() << std::endl;
-        */
-    }
-
     Spell::Spell(SpellInfo& si, const ga::Position2D<float>& position, const int& rotation)
         : formation(si.formation), lifetime(0), empty(false), sprite(si.sprite)
     {
@@ -90,6 +76,7 @@ namespace th {
                     break;
                 default: break;
             }
+            bullet.coll.setPosition(bullet.position);
             return bullet.OOB;
         });
         this->empty = bullets.empty();

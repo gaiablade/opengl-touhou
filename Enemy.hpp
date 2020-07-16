@@ -58,11 +58,9 @@ namespace th {
 
     class Enemy {
         public:
-        Enemy(ga::jsonObj& obj, std::map<std::string, ga::Texture*>& textures, ga::Size2D windowSize);
         Enemy(EnemyParams* params);
         Enemy(const Enemy& old_obj);
         ~Enemy();
-        void compileBehaviours(ga::jsonObj& obj);
         void loop();
         void render(ga::Window& window);
         bool isTrue(int dependence, int condition, int op, int value, int value2 = 0);

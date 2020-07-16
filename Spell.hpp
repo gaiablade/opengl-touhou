@@ -33,18 +33,13 @@ namespace th {
             float speed;
         };
         ga::Rotation2D rotation;
-        //ga::Vector2<float> direction;
-        //ga::Position2D<float> position;
-        //ga::Rotation2D rotation;
         ga::Collider coll;
         bool OOB;
         int lifetime = 0;
-        //void update(ga::Position2D<float>& spellPosition);
     };
 
     class Spell {
         public:
-        Spell(ga::Sprite* sprite);
         Spell(SpellInfo& si, const ga::Position2D<float>& position, const int& rotation = 0);
         void update();
         void render(ga::Window& window);

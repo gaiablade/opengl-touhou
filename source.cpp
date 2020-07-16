@@ -23,7 +23,7 @@ int main() {
     ss[0] >> width;
     ss[1] >> height;
     if (ss[0].fail() || ss[1].fail()) {
-        std::cout << "Syntax Error in config.json: width and height must be integer numbers!\n";
+        std::cerr << "Syntax Error in config.json: width and height must be integer numbers!\n";
         return 1;
     }
 

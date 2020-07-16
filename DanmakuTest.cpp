@@ -2,10 +2,12 @@
 
 using namespace std::string_literals;
 
+// Move elsewhere?
 struct textureRectangle {
     int left = 0, top = 0, width = 0, height = 0;
 };
 
+// Move to GaiaGL??
 int toInt(const std::string& str) {
     std::stringstream ss(str);
     int result;
@@ -22,10 +24,15 @@ namespace th {
         : background(ga::Color(0.2588f, 0.4706f, 0.9608f, 1.0f), width, height),
           bar(ga::Color(1.0f, 0.0f, 0.0f, 1.0f), width / 5, height), window(window)
     {
+        // TODO: Move soundengine generation elsewhere and pass pointer along
         this->soundEngine = ik::createIrrKlangDevice();
         //soundEngine->play2D("assets/music/bucket.ogg", true);
+
+        // Reminder, status = 0 means not finished, status = 1 means finished
         this->status = 0;
         this->frame = 0;
+
+        // Will eventually change when background is not just a colored rectangle
         background.setPosition(ga::Position2D<float>(width/2, height/2));
         bar.setPosition(ga::Position2D<float>(width - bar.getWidth()/2, height/2));
 
@@ -36,13 +43,18 @@ namespace th {
     }
 
     DanmakuTest::~DanmakuTest() {
+        // Delete enemies first
         for (auto& e: enemies) {
             delete e;
         }
         this->enemies.clear();
+
+        // Delete sprites second
         for (auto& s : sprites) {
             delete s.second;
         }
+
+        // Delete textures last
         for (auto& p : this->textures) {
             delete p.second;
         }
@@ -50,22 +62,35 @@ namespace th {
     }
 
     void DanmakuTest::render(ga::Window& window) {
+        // Layer 1: Background
         window.getRenderer().Draw(background);
+
+        // Layer 2: Enemies
         for (auto& e : this->enemies) {
             e->render(window);
         }
+
+        // Layer 3: Player
+        this->player.render(window);
+
+        // Layer 4: Spells
         for (auto& s : this->spells) {
             s.render(window);
         }
-        this->player.render(window);
+
+        // Layer 5: Stat bar
         window.getRenderer().Draw(bar);
     }
 
     void DanmakuTest::update(ga::Window& window) {
+        // Check keyboard input
         updateInput();
+
+        // Update player movement and other properties
         player.update();
+
+        // Spawn enemies based on frame
         const auto it = enemySpawns.find(frame);
-        // Spawn enemies
         if (it != enemySpawns.end()) {
             for (auto e : it->second) {
                 this->enemies.push_back(new Enemy(&this->enemyParams[e.index]));
@@ -73,7 +98,8 @@ namespace th {
                 this->enemies.back()->position.y = e.y;
             }
         }
-        // Cast spells
+
+        // Cast spells based on enemies' frame
         for (auto& e : enemies) {
             e->loop();
             if (e->polledSpell.spell != -1) {
@@ -81,21 +107,23 @@ namespace th {
                 e->polledSpell.spell = -1;
             }
         }
+
         // Update spells
-        for (auto& s : spells) {
-            s.update();
-        }
+        spells.remove_if([&](Spell& spell) {
+            spell.update();
+            return spell.empty;
+        });
+
         // Check collisions
         for (auto& spell : this->spells) {
             for (auto& bullet : spell.bullets) {
                 if (player.coll.isColliding(bullet.coll)) {
+                    // COLLISION DETECTED, DEFINE BEHAVIOUR HERE
                     player.sprite->setColor(ga::Color(0.0f, 1.0f, 1.0f, 1.0f));
                 }
             }
         }
-        spells.remove_if([&](const Spell& spell) {
-            return spell.empty;
-        });
+
         frame++;
     }
 
@@ -135,7 +163,6 @@ namespace th {
         };
 
         auto r = ga::Parser::ParseJSON("scripts/enemy.json").obj;
-        //for (auto& obj : r.objs) {
         for (auto& [key, obj] : r.objs) {
             // Parse each enemy into a set of parameters
             int index = toInt(key);
