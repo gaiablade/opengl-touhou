@@ -82,6 +82,7 @@ namespace th {
         window.getRenderer().Draw(bar);
     }
 
+    // This function is run every frame and updates all the components in the state
     void DanmakuTest::update(ga::Window& window) {
         // Check keyboard input
         updateInput();
@@ -148,7 +149,10 @@ namespace th {
         }
     }
 
+    // Iterate through enemies in enemy script and add the defined parameters to
+    // the list of all enemy parameters
     void DanmakuTest::compileEnemies() {
+        // Use a hash-map to replicate functionality of a switch block with strings
         const static std::unordered_map<std::string, int> enums = {
             { "frame"s,       (int)DEPEND::FRAME         },
             { "none"s,        (int)DEPEND::NONE          },
@@ -165,11 +169,17 @@ namespace th {
         auto r = ga::Parser::ParseJSON("scripts/enemy.json").obj;
         for (auto& [key, obj] : r.objs) {
             // Parse each enemy into a set of parameters
+            // Get index of enemy
             int index = toInt(key);
+
+            // Get enemy name (e.g. red-orb)
             std::string name = obj["name"].val;
+
+            // Set index in name lookup table
             this->enemyToInt[name] = index;
 
             EnemyParams ep;
+            // Enemy appearance (sprite and animations)
             if (obj.has("init") && obj["init"].has("appearance")) {
                 auto& appearance = obj["init"]["appearance"];
                 if (appearance.has("sprite")) {
