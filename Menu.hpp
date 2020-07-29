@@ -1,6 +1,6 @@
 #pragma once
 #include <array>
-#include <GaiaGL/Graphics.h>
+#include <GaiaGL/Graphics.hpp>
 #include "State.hpp"
 
 namespace th {

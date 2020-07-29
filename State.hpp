@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
-#include <GaiaGL/Graphics.h>
-#include <GaiaGL/Input.h>
+#include <GaiaGL/Graphics.hpp>
+#include <GaiaGL/Input.hpp>
 
 namespace th {
 

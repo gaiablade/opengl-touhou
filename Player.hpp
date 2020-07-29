@@ -1,7 +1,7 @@
 #pragma once
 
-#include <GaiaGL/Graphics.h>
-#include <GaiaGL/System.h>
+#include <GaiaGL/Graphics.hpp>
+#include <GaiaGL/System.hpp>
 
 namespace th {
     class Player {

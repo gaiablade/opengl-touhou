@@ -1,8 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include "Touhou.hpp"
-#include <GaiaGL/Graphics.h>
-#include <GaiaGL/System.h>
+#include <GaiaGL/Graphics.hpp>
+#include <GaiaGL/System.hpp>
 
 int main() {
     // Parse config file

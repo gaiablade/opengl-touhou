@@ -37,7 +37,8 @@ namespace th {
         if (curr_state.top()->status == 1) {
             delete curr_state.top();
             curr_state.pop();
-            curr_state.emplace(new DanmakuTest(this->window.getWidth(), this->window.getHeight(), &this->window));
+            //curr_state.emplace(new DanmakuTest(this->window.getWidth(), this->window.getHeight(), &this->window));
+            curr_state.emplace(new EditSpell(window.getWidth(), window.getHeight(), &window));
         }
     }
 }

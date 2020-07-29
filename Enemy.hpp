@@ -1,8 +1,8 @@
 #pragma once
 #include "pch.h"
 #include <functional>
-#include <GaiaGL/Graphics.h>
-#include <GaiaGL/System.h>
+#include <GaiaGL/Graphics.hpp>
+#include <GaiaGL/System.hpp>
 #include "Spell.hpp"
 
 namespace th {
