@@ -1,16 +1,16 @@
-INC = -I$(GAIAGL)/ -I$(GAIAGL)/GaiaGL/vendor -I$(IMGUI) -I$(IRRKLANG)/irrKlang/include
+INC = -I$(HOME)/github/GaiaGL/ -I$(HOME)/github/GaiaGL/vendor -I$(IMGUI) -I$(IRRKLANG)/irrKlang/include
 LIB = -L$(GAIAGL)/GaiaGL/ -L$(IRRKLANG)/irrKlang/lib -lgaiagl -lGL -lGLEW -lglfw \
 	$(IRRKLANG)/irrKlang/bin/linux-gcc-64/libIrrKlang.so $(IRRKLANG)/irrKlang/bin/linux-gcc-64/ikpMP3.so -pthread \
 	-L$(HOME)/assimp/code -lassimp
-OBJ = $(GAIAGL)/GaiaGL/libgaiagl.a Touhou.o State.o Menu.o \
+OBJ = Touhou.o State.o Menu.o \
 	Enemy.o Spell.o Player.o EditSpell.o
 
 NAME = Touhou
 COMP = g++
 FLAG = -std=c++2a -Wall #-ggdb -fsanitize=address -fno-omit-frame-pointer -fsanitize=leak
 
-$(NAME): source.cpp $(OBJ) pch.h.gch
-	$(COMP) source.cpp $(OBJ) -o $@ $(INC) $(LIB) $(FLAG)
+all: source.cpp $(OBJ) pch.h.gch
+	$(COMP) source.cpp $(HOME)/github/GaiaGL/GaiaGL/libgaiagl.a $(OBJ) -o $(NAME) $(INC) $(LIB) $(FLAG)
 
 Touhou.o: Touhou.cpp Touhou.hpp State.o Menu.o EditSpell.o #DanmakuTest.o EditSpell.o
 	$(COMP) $< -c -o $@ $(INC) $(LIB) $(FLAG)

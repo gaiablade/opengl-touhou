@@ -16,12 +16,14 @@ namespace th {
         ~EditSpell();
         void render(ga::Window& window) override;
         void update(ga::Window& window) override;
+        void createSpell();
 
         private:
         ga::Window* window;
         ga::ImGuiInst imgui;
         std::list<Spell> spells;
-        C_SpellParams csp;
+        //C_SpellParams csp;
+        std::vector<C_SpellParams> csps;
         D_SpellParams dsp;
         ga::Texture* texture;
         ga::Sprite* sprite;
@@ -29,5 +31,7 @@ namespace th {
         ga::Sprite* playerSprite;
         Player player;
         int frame;
+        int currentSpellSelected;
+        std::vector<const char*> names;
     };
 }
