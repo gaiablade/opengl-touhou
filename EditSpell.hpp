@@ -13,10 +13,11 @@ namespace th {
     class EditSpell : public State {
         public:
         EditSpell(int width, int height, ga::Window* window);
-        ~EditSpell();
+        ~EditSpell() override;
         void render(ga::Window& window) override;
         void update(ga::Window& window) override;
         void createSpell();
+        void initCSPS();
 
         private:
         ga::Window* window;
@@ -32,6 +33,6 @@ namespace th {
         Player player;
         int frame;
         int currentSpellSelected;
-        std::vector<const char*> names;
+        std::array<const char*, 7> formationNames{};
     };
 }

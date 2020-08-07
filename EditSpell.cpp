@@ -1,29 +1,31 @@
 #include "EditSpell.hpp"
 
-int curr_item = 1;
-const char* itemNames[] = { "None", "Radial", "Whirlpool", "Homing" };
-
 namespace th {
     EditSpell::EditSpell(int width, int height, ga::Window* window)
-        : window(window), imgui(*window), playerTex(new ga::Texture("assets/images/marisa.png")), playerSprite(new ga::Sprite(playerTex)), frame(0),
-            currentSpellSelected(0)
+        : window(window), imgui(*window), playerTex(new ga::Texture("assets/images/marisa.png")),
+            playerSprite(new ga::Sprite(playerTex)), frame(0), currentSpellSelected(0)
     {
         texture = new ga::Texture("assets/images/red_arrow.png");
         sprite = new ga::Sprite(texture);
+
+        this->formationNames = {
+                "None", "Radial", "Whirlpool",
+                "Homing", "Rumia_1", "Rumia_2",
+                "Rumia_3"
+        };
 
         // Player
         this->player.sprite = this->playerSprite;
         this->player.position = { 450.f, 500.f };
 
-        csps.reserve(3);
-        this->csps[0] = { .n_Formation = static_cast<int>(FORM::RAD), .n_NumBullets = 4, .n_Duration = 60, .f_Speed = 3.f, .sprite = this->sprite };
-        this->csps[1] = { .n_Formation = static_cast<int>(FORM::RAD), .n_NumBullets = 4, .n_Duration = 60, .f_Speed = 3.f, .sprite = this->sprite };
-        this->csps[2] = { .n_Formation = static_cast<int>(FORM::RAD), .n_NumBullets = 4, .n_Duration = 60, .f_Speed = 3.f, .sprite = this->sprite };
-        this->dsp = { .v_SpellPosition = { window->getWidth() / 2, window->getHeight() / 2 }, .v_PlayerPosition = { player.position.x, player.position.y } };
+        this->initCSPS();
 
-        names.push_back("1");
-        names.push_back("2");
-        names.push_back("3");
+        this->dsp = {
+                .v_SpellPosition = {
+                        static_cast<float>(window->getWidth()) / 2, static_cast<float>(window->getHeight()) / 2
+                },
+                .v_PlayerPosition = {player.position.x, player.position.y}
+        };
     }
 
     EditSpell::~EditSpell()
@@ -42,11 +44,18 @@ namespace th {
         imgui.NewFrame();
 
         ImGui::Begin("Spells");
-        ImGui::ListBox("Choose a spell", &currentSpellSelected, &names[0], names.size());
+        ImGui::SliderInt("Spell", &currentSpellSelected, 0, this->csps.size() - 1);
+        ImGui::LabelText("Spell Parameters", nullptr);
+        ImGui::ListBox("Formation", &this->csps[currentSpellSelected].n_Formation,
+                       this->formationNames.data(), this->formationNames.size());
+        ImGui::SliderInt("Frame Duration", &this->csps[currentSpellSelected].n_Duration, 1, 800);
+        ImGui::SliderInt("NumBullets", &this->csps[currentSpellSelected].n_NumBullets, 1, 100);
+        ImGui::SliderFloat("Speed", &this->csps[currentSpellSelected].f_Speed, 0.f, 20.f);
         ImGui::End();
 
         imgui.Begin("Main");
         ImGui::SliderFloat("PlayerX", &player.position.x, 0.f, this->window->getWidth());
+        ImGui::SliderFloat("PlayerY", &player.position.y, 0.f, this->window->getHeight());
         if (ImGui::Button("Fire")) {
             createSpell();
         }
@@ -58,12 +67,9 @@ namespace th {
                 .f_Speed = 3.f,
                 .sprite = this->sprite
             });
-            std::stringstream ss;
-            auto s = (int)names.size();
-            std::cout << s << '\n';
-            ss << (int)s;
-            std::cout << ss.str();
-            this->names.push_back({ss.str().c_str()});
+        }
+        if (ImGui::Button("Reset Spells")) {
+            this->initCSPS();
         }
         imgui.End();
 
@@ -74,11 +80,6 @@ namespace th {
     {
         frame++;
         this->dsp.v_PlayerPosition = { player.position.x, player.position.y };
-        /*
-        if (frame % 100 == 0) {
-            createSpell();
-        }
-        */
         spells.remove_if([&](Spell& spell) {
             spell.update();
             return spell.b_Empty;
@@ -89,6 +90,19 @@ namespace th {
     void EditSpell::createSpell() {
         for (auto& csp : this->csps) {
             this->spells.emplace_back(Spell(csp, dsp, this->window));
+        }
+    }
+
+    void EditSpell::initCSPS() {
+        csps.clear();
+        for (int i = 0; i < 3; i++) {
+            this->csps.emplace_back(C_SpellParams{
+                    .n_Formation = static_cast<int>(FORM::RAD),
+                    .n_NumBullets = 4,
+                    .n_Duration = 60,
+                    .f_Speed = 3.f,
+                    .sprite = this->sprite
+            });
         }
     }
 }

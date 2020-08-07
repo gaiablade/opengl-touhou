@@ -16,65 +16,7 @@
  * ============================================================================
  */
 
-/*
-namespace th {
-
-    enum class POSITION {
-        NONE = 0, OWNER, CUSTOM
-    };
-
-    enum class FORMATION {
-        NONE = 0, RADIAL, WHIRLPOOL, HOMING, RAD2
-    };
-
-    struct SpellInfo {
-        std::string name;
-        int startingPosition;
-        ga::Position2D<int> position = { 0, 0 };
-        int formation;
-        int numBullets;
-        float speed;
-        ga::Sprite* sprite;
-        ga::Position2D<float> playerPosition;
-    };
-
-    struct Bullet {
-        ga::Position2D<float> position;
-        union {
-            ga::Position2D<float> center; // important for whirlpool
-            ga::Position2D<float> target; // important for homing
-        };
-        union {
-            ga::Vector2<float> direction;
-        };
-        float speed;
-        ga::Rotation2D rotation;
-        ga::Collider coll;
-        bool OOB;
-        int lifetime = 0;
-
-        // Movement functions
-        void mov_radial();
-        void mov_whirlpool();
-        void mov_homing();
-    };
-
-    class Spell {
-        public:
-        Spell(SpellInfo& si, const ga::Position2D<float>& position, const int& rotation = 0);
-        void update();
-        void render(ga::Window& window);
-
-        int formation;
-        std::list<Bullet> bullets;
-        ga::Sprite* sprite;
-        ga::Position2D<float> position;
-        double lifetime;
-        bool empty;
-    };
-
-}
-*/
+ga::Vector2<float> homing_dir(const ga::v2f& spawn, const ga::v2f& target);
 
 namespace th {
     enum class FORM {
@@ -85,6 +27,9 @@ namespace th {
         HOMING,
 
         // More complex formations
+        RUMIA_HOMING_LINE_1,
+        RUMIA_SEMICIRCLE_2,
+        RUMIA_LASER_3,
     };
 
     class Bullet {
@@ -95,9 +40,9 @@ namespace th {
             ga::v2f v_Center;
             ga::v2f v_Target;
         };
-        int n_Duration;
-        float f_Rotation;
-        float f_Speed;
+        int n_Duration{};
+        float f_Rotation{};
+        float f_Speed{};
         ga::Collider c_Collider;
 
         // Static
@@ -126,22 +71,29 @@ namespace th {
         Spell() =delete;
         Spell(const C_SpellParams& csp, const D_SpellParams& dsp, ga::Window* windowPointer);
 
-        void initRadial(const C_SpellParams& csp, const D_SpellParams& dsp);
-        void initWhirlpool(const C_SpellParams& csp, const D_SpellParams& dsp);
-        void initHoming(const C_SpellParams& csp, const D_SpellParams& dsp);
+        template <FORM form>
+        void initSpell(const C_SpellParams& csp, const D_SpellParams& dsp);
 
         void render(ga::Window& window);
+
         void update();
+
+        // Specialized update function
+        template <FORM form>
+        void updateSpell();
 
         int n_Formation;
         int n_NumBullets;
         int n_Lifetime;
         int n_Duration;
         float f_Speed;
-        bool b_Empty;
+        bool b_Empty{false};
         ga::v2f v_Position;
         std::list<Bullet> l_Bullets;
         ga::Window* windowPointer;
-        ga::Sprite* sprite;
+        union {
+            ga::Sprite* sprite;
+            ga::ColorRect* rect;
+        };
     };
 }
