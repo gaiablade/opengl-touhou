@@ -34,5 +34,7 @@ namespace th {
         int frame;
         int currentSpellSelected;
         std::array<const char*, 7> formationNames{};
+
+        bool b_CollisionDetected{false};
     };
 }

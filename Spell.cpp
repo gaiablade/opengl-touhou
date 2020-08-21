@@ -17,14 +17,18 @@ namespace th {
     void th::Spell::initSpell<th::FORM::RAD>(const C_SpellParams& csp, const D_SpellParams& dsp) {
         // TODO: Make compliant with FLP30-C
         float angle = 360.0f / static_cast<float>(n_NumBullets);
-        for (float i = 0; i < 360.0f; i += angle) {
+        //int iterations = static_cast<int>(360.f / static_cast<float>(n_NumBullets));
+        int iterations = static_cast<int>(360.f / angle);
+        //for (float i = 0; i < 360.0f; i += angle) {
+        for (int i = 0; i < iterations; i++) {
+            float a = angle * static_cast<float>(i);
             this->l_Bullets.emplace_back(Bullet{
-                    .v_Position  = { static_cast<float>(cos(i * PI / 180) + v_Position.x),
-                                     static_cast<float>(sin(i * PI / 180) + v_Position.y) },
-                    .v_Direction = { static_cast<float>(cos(i * PI / 180) * f_Speed),
-                                     static_cast<float>(sin(i * PI / 180) * f_Speed) },
+                    .v_Position  = { static_cast<float>(cos(a * PI / 180) + v_Position.x),
+                                     static_cast<float>(sin(a * PI / 180) + v_Position.y) },
+                    .v_Direction = { static_cast<float>(cos(a * PI / 180) * f_Speed),
+                                     static_cast<float>(sin(a * PI / 180) * f_Speed) },
                     .n_Duration = this->n_Duration,
-                    .f_Rotation = i,
+                    .f_Rotation = a,
                     .f_Speed = this->f_Speed,
                     .c_Collider = { ga::ColliderOpt{ .width = 10.f, .height = 10.f } }
             });
@@ -61,7 +65,7 @@ namespace th {
                 .f_Speed = this->f_Speed,
                 .c_Collider = { ga::ColliderOpt{ .width = 10.f, .height = 10.f } },
         });
-        this->l_Bullets.back().f_Rotation = this->l_Bullets.back().v_Direction.unitVector().angle();
+        this->l_Bullets.back().f_Rotation = this->l_Bullets.back().v_Direction.angle();
         this->l_Bullets.back().c_Collider.setRotation(l_Bullets.back().f_Rotation);
     }
 
@@ -78,7 +82,7 @@ namespace th {
                 .f_Speed = this->f_Speed + static_cast<float>(i),
                 .c_Collider = { ga::ColliderOpt{ .width = 10.f, .height = 10.f } }
             });
-            this->l_Bullets.back().f_Rotation = this->l_Bullets.back().v_Direction.unitVector().angle();
+            this->l_Bullets.back().f_Rotation = this->l_Bullets.back().v_Direction.angle();
             this->l_Bullets.back().c_Collider.setRotation(this->l_Bullets.back().f_Rotation);
         }
     }
@@ -109,7 +113,6 @@ namespace th {
         });
         this->l_Bullets.back().f_Rotation = this->l_Bullets.back().v_Direction.unitVector().angle();
         this->l_Bullets.back().c_Collider.setRotation({this->l_Bullets.back().f_Rotation});
-        std::cout << l_Bullets.back().v_Direction.unitVector().angle() << '\n';
     }
 }
 
@@ -139,13 +142,16 @@ namespace th {
                 .f_Speed = this->f_Speed + static_cast<float>(num),
                 .c_Collider = { ga::ColliderOpt{ .width = 10.f, .height = 10.f } }
             });
-            this->l_Bullets.back().f_Rotation = this->l_Bullets.back().v_Direction.unitVector().angle();
+            this->l_Bullets.back().f_Rotation = this->l_Bullets.back().v_Direction.angle();
             this->l_Bullets.back().c_Collider.setRotation(this->l_Bullets.back().f_Rotation);
         }
     }
 
     template<>
     void Spell::updateSpell<th::FORM::RUMIA_LASER_3>() {
+        std::for_each(this->l_Bullets.begin(), this->l_Bullets.end(), [&](Bullet& bullet) {
+            bullet.b_HBoxActive = bullet.n_Lifetime > 50;
+        });
     }
 }
 
@@ -199,7 +205,8 @@ namespace th {
                 initSpell<FORM::RUMIA_SEMICIRCLE_2>(csp, dsp);
                 break;
             case (int)FORM::RUMIA_LASER_3:
-                this->rect = new ga::ColorRect({1.f, 1.f, 1.f, 1.f}, 1600.f, 10.f);
+                this->rect = new ga::ColorRect({1.f, 1.f, 1.f, 1.f},
+                                               static_cast<float>(windowPointer->getWidth() * 2), 10.f);
                 initSpell<FORM::RUMIA_LASER_3>(csp, dsp);
                 break;
         }
@@ -217,7 +224,7 @@ namespace th {
             default:
                 for (auto& bullet : l_Bullets) {
                     this->sprite->setPosition(ga::Position2D<float>(bullet.v_Position.x, bullet.v_Position.y));
-                    this->sprite->setRotation(bullet.f_Rotation + 180.f);
+                    this->sprite->setRotation(bullet.f_Rotation);
                     window.getRenderer().Draw(*sprite);
                 }
                 break;
@@ -229,6 +236,9 @@ namespace th {
         switch (this->n_Formation) {
             case (int)FORM::RUMIA_SEMICIRCLE_2:
                 this->updateSpell<FORM::RUMIA_SEMICIRCLE_2>();
+                break;
+            case (int)FORM::RUMIA_LASER_3:
+                this->updateSpell<FORM::RUMIA_LASER_3>();
                 break;
             default:
                 this->updateSpell<FORM::NONE>();
@@ -245,8 +255,6 @@ namespace th {
                     bullet.Move_Whirlpool();
                     break;
                 case (int)FORM::HOMING:
-                    //bullet.Move_Homing();
-                    //break;
                 case (int)FORM::RUMIA_HOMING_LINE_1:
                     bullet.Move_Homing();
                     break;

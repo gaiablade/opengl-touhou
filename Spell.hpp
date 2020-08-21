@@ -47,6 +47,7 @@ namespace th {
 
         // Static
         int n_Lifetime = 0;
+        bool b_HBoxActive{true};
 
         void Move_Radial();
         void Move_Whirlpool();

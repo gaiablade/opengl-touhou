@@ -1,5 +1,7 @@
 #include "EditSpell.hpp"
 
+const static int def_duration = 300;
+
 namespace th {
     EditSpell::EditSpell(int width, int height, ga::Window* window)
         : window(window), imgui(*window), playerTex(new ga::Texture("assets/images/marisa.png")),
@@ -50,10 +52,12 @@ namespace th {
                        this->formationNames.data(), this->formationNames.size());
         ImGui::SliderInt("Frame Duration", &this->csps[currentSpellSelected].n_Duration, 1, 800);
         ImGui::SliderInt("NumBullets", &this->csps[currentSpellSelected].n_NumBullets, 1, 100);
-        ImGui::SliderFloat("Speed", &this->csps[currentSpellSelected].f_Speed, 0.f, 20.f);
+        ImGui::SliderFloat("Speed", &this->csps[currentSpellSelected].f_Speed, 0.f, 10.f);
         ImGui::End();
 
         imgui.Begin("Main");
+        std::string m = b_CollisionDetected ? "Collision Detected!" : "No Collision.";
+        //ImGui::LabelText(m.c_str(), nullptr);
         ImGui::SliderFloat("PlayerX", &player.position.x, 0.f, this->window->getWidth());
         ImGui::SliderFloat("PlayerY", &player.position.y, 0.f, this->window->getHeight());
         if (ImGui::Button("Fire")) {
@@ -63,7 +67,7 @@ namespace th {
             this->csps.emplace_back(C_SpellParams{
                 .n_Formation = static_cast<int>(FORM::RAD),
                 .n_NumBullets = 4,
-                .n_Duration = 60,
+                .n_Duration = def_duration,
                 .f_Speed = 3.f,
                 .sprite = this->sprite
             });
@@ -79,9 +83,15 @@ namespace th {
     void EditSpell::update(ga::Window& window)
     {
         frame++;
+        this->b_CollisionDetected = false;
         this->dsp.v_PlayerPosition = { player.position.x, player.position.y };
         spells.remove_if([&](Spell& spell) {
             spell.update();
+            std::for_each(spell.l_Bullets.begin(), spell.l_Bullets.end(), [&](Bullet& bullet) {
+                if (this->player.coll.isColliding(bullet.c_Collider)) {
+                    this->b_CollisionDetected = true;
+                }
+            });
             return spell.b_Empty;
         });
         player.update();
@@ -99,7 +109,7 @@ namespace th {
             this->csps.emplace_back(C_SpellParams{
                     .n_Formation = static_cast<int>(FORM::RAD),
                     .n_NumBullets = 4,
-                    .n_Duration = 60,
+                    .n_Duration = def_duration,
                     .f_Speed = 3.f,
                     .sprite = this->sprite
             });
